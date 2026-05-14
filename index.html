@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centre Évangélique Pentecôtiste Berée</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-logo">
+  <img src="asset/Sans titre.png" alt="CEP Berée" class="nav-logo-img">
+</div>
+  <ul class="nav-links">
+    <li><a href="#horaires">Horaires</a></li>
+    <li><a href="#about">À Propos</a></li>
+    <li><a href="#ministeres">Ministères</a></li>
+    <li><a href="requetes.html" class="nav-cta">Requête de prière</a></li>
+  </ul>
+
+<button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+
+</nav>
+
+
+<div class="nav-mobile" id="nav-mobile">
+  <a href="#horaires">Horaires</a>
+  <a href="#about">À Propos</a>
+  <a href="#ministeres">Ministères</a>
+  <a href="#evenements">Événements</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>
+    <em>Bienvenue à Berée</em>
+  </h1>
+  <blockquote class="hero-verse">
+    « Le Centre Évangélique Pentecôtiste Berée est une église locale de la 37ème communauté des ensemblées de Dieu du Congo... »
+  </blockquote>
+  <div class="hero-buttons">
+    <a href="#horaires" class="btn-primary">Rejoignez-nous</a>
+    <a href="#about" class="btn-ghost">Notre histoire</a>
+  </div>
+</section>
+
+<!-- ÉVÉNEMENTS -->
+<section class="section evenements" id="evenements">
+  <div class="evenements-inner">
+    <h2 class="section-title">Tu n'es pas ici par hasard !</h2>
+    <div class="actions-grid">
+      
+      <a href="nouveau-venu.html" class="action-card">
+  <div class="action-card__icon">
+    <img src="asset/IMG_1876.jpg" alt="Je suis nouveau">
+  </div>
+  <h3>Je suis nouveau</h3>
+  <p>Découvrez notre église et comment nous rejoindre pour la première fois.</p>
+  <span class="action-card__link">En savoir plus →</span>
+</a>
+
+<a href="pasteur.html" class="action-card">
+  <div class="action-card__icon">
+    <img src="asset/IMG 1012.jpg" alt="Parler au pasteur">
+  </div>
+  <h3>Parler au pasteur</h3>
+  <p>Besoin d'un conseil spirituel ou d'un accompagnement personnel ? Contactez-nous.</p>
+  <span class="action-card__link">Prendre contact →</span>
+</a>
+
+<a href="donner-ma-vie.html" class="action-card">
+  <div class="action-card__icon">
+    <img src="asset/IMG 3939.JPG" alt="Donner ma vie à Jésus">
+  </div>
+  <h3>Donner ma vie à Jésus</h3>
+  <p>Faites le pas le plus important de votre vie et commencez un nouveau chemin avec Christ.</p>
+  <span class="action-card__link">Faire ce pas →</span>
+</a>
+
+<a href="bapteme.html" class="action-card">
+  <div class="action-card__icon">
+    <img src="asset/IMG 3737.jpg" alt="Me faire baptiser">
+  </div>
+  <h3>Me faire baptiser</h3>
+  <p>Le baptême est une étape essentielle dans votre marche avec Dieu. Inscrivez-vous.</p>
+  <span class="action-card__link">M'inscrire →</span>
+</a>
+
+    </div>
+  </div>
+</section>
+
+<!-- À LA UNE -->
+<section class="section une" id="une">
+  <div class="une-inner">
+
+    <div class="une-header">
+      <div>
+        <p class="section-label">Actualités</p>
+        <h2 class="section-title">À la une</h2>
+      </div>
+      <div class="une-tabs">
+        <button class="une-tab active" data-tab="youtube">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.6 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.3.6 9.3.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
+          </svg>
+          YouTube
+        </button>
+        <button class="une-tab" data-tab="facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/>
+          </svg>
+          Facebook
+        </button>
+      </div>
+    </div>
+
+    <!-- Skeleton loader -->
+    <div class="une-skeleton" id="une-skeleton">
+      <div class="skeleton-featured">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-body">
+          <div class="skeleton-line w40"></div>
+          <div class="skeleton-line w80"></div>
+          <div class="skeleton-line w60"></div>
+          <div class="skeleton-line w90"></div>
+          <div class="skeleton-line w50"></div>
+        </div>
+      </div>
+      <div class="skeleton-side">
+        <div class="skeleton-small">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line w60"></div>
+            <div class="skeleton-line w80"></div>
+          </div>
+        </div>
+        <div class="skeleton-small">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line w60"></div>
+            <div class="skeleton-line w80"></div>
+          </div>
+        </div>
+        <div class="skeleton-small">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line w60"></div>
+            <div class="skeleton-line w80"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenu dynamique injecté par js/main.js -->
+    <div class="une-grid" id="une-grid" style="display:none;"></div>
+
+    <!-- Message d'erreur -->
+    <div class="une-error" id="une-error" style="display:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <p>Impossible de charger le contenu. Vérifiez vos clés API.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- HORAIRES -->
+<section class="section horaires" id="horaires">
+  <div class="horaires-inner">
+    <div class="horaires-text">
+      <p class="section-label">Cultes &amp; Réunions</p>
+      <h2 class="section-title">Portes ouvertes pour tous</h2>
+      <p>Nous vous accueillons chaleureusement, que vous soyez croyant de longue date ou simplement curieux de découvrir la foi chrétienne. Tous sont les bienvenus ici.</p>
+      <a href="#contact" class="btn-primary btn-block">Planifier une visite</a>
+    </div>
+    <div class="service-list">
+      <div class="service-item">
+        <span class="service-day">Lundi au Vendredi</span>
+        <span class="service-name">Culte matinal</span>
+        <span class="service-time">06h00 – 07h00</span>
+      </div>
+      <div class="service-item">
+        <span class="service-day">Mardi et Jeudi</span>
+        <span class="service-name">Enseignement</span>
+        <span class="service-time">17h00 – 19h00</span>
+      </div>
+      <div class="service-item">
+        <span class="service-day">Mercredi</span>
+        <span class="service-name">Réunion des femmes</span>
+        <span class="service-time">08h00 – 10h30</span>
+      </div>
+      <div class="service-item">
+        <span class="service-day">Samedi</span>
+        <span class="service-name">Réunion des jeunes</span>
+        <span class="service-time">17h00 – 19h00</span>
+      </div>
+      <div class="service-item">
+        <span class="service-day">Dimanche</span>
+        <span class="service-name">École de Dimanche</span>
+        <span class="service-time">09h00 – 11h00</span>
+      </div>
+      <div class="service-item">
+        <span class="service-day">Dimanche</span>
+        <span class="service-name">Culte Dominical</span>
+        <span class="service-time">08h00 – 11h00</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- À PROPOS -->
+<section class="section about" id="about">
+  <div class="about-inner">
+
+    <!-- GAUCHE : Historique -->
+    <div class="about-history">
+      <p class="section-label">Notre Histoire</p>
+      <h2 class="section-title">Un chemin de foi depuis les origines</h2>
+      <p>Fondé par le Révérend Pasteur <b>TSHISUNGU MWAMBI</b> en 1983 et dirigée par le Pasteur 
+        <b>IYELI BAHENDE Elie</b>, le Centre Évangélique Pentecôtiste Berée a grandi au fil des années pour devenir une communauté vivante et enracinée dans la Parole de Dieu.</p>
+      <p>Le Centre Évangélique Pentecôtiste Bérée (CEP Berée) est une église locale de la 
+            37ème Communauté des Assemblées de Dieu du Congo (C.A.D.C) en sigle, elle propose des cultes dynamiques, des enseignements profonds et des moments intenses de prières. 
+            Elle œuvre activement sur les réseaux sociaux pour partager l’évangile de Jésus-Christ.
+          </p>
+    </div>
+
+    <!-- DROITE : Vision -->
+    <div class="about-vision">
+      <p class="section-label">Notre Vision</p>
+      <h2 class="section-title">Une communauté fondée sur l'amour</h2>
+      <div class="about-values">
+        <div class="about-value">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="value-text">
+            <h4>Foi ancrée dans la Parole</h4>
+            <p>Nous croyons que la Bible est la Parole vivante de Dieu, notre guide pour chaque aspect de la vie.</p>
+          </div>
+        </div>
+        <div class="about-value">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="value-text">
+            <h4>Communauté fraternelle</h4>
+            <p>Ensemble, nous grandissons dans la grâce et nous nous soutenons mutuellement dans toutes les saisons de la vie.</p>
+          </div>
+        </div>
+        <div class="about-value">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="value-text">
+            <h4>Service &amp; Mission</h4>
+            <p>Guidés par l'amour du Christ, nous servons notre prochain et partageons la Bonne Nouvelle.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MINISTÈRES -->
+<section class="section" id="ministeres">
+  <div class="ministeres-inner">
+    <p class="section-label">Départements et Services</p>
+    <h2 class="section-title">Servir ensemble, grandir ensemble</h2>
+    <div class="ministeres-grid">
+
+      <div class="ministere-card">
+        <img class="card-img" src="asset/IMG_3123.jpg" alt="Département des Hommes">
+        <div class="card-body">
+          <h3>Département des Hommes</h3>
+          <p>Dans le monde d'aujourd'hui, les églises qui sont fortes et en pleine croissance sont celles
+          qui se tournent vers les hommes. Les recherches actuelles démontrent que lorsqu'un homme s'engage,
+          toute sa famille suit généralement son exemple. Ce département encourage la maturité spirituelle
+          et le leadership chrétien. Il est un pilier essentiel pour la stabilité de l'église.</p>
+        </div>
+      </div>
+
+      <div class="ministere-card">
+        <img class="card-img" src="asset/IMG_9044.jpg" alt="Département des Femmes">
+        <div class="card-body">
+          <h3>Département des Femmes</h3>
+          <p>Ce département n'est pas un mouvement féministe mais un cadre spirituel d'échanges entre sœurs
+          dans la foi. Les femmes y trouvent un espace pour se soutenir mutuellement et croître dans leur
+          relation avec Dieu. Elles organisent des retraites, des temps de prière et des conférences édifiantes.
+          Leur rôle est vital dans la transmission des valeurs chrétiennes.</p>
+        </div>
+      </div>
+
+      <div class="ministere-card">
+        <img class="card-img" src="asset/IMG_5203.jpg" alt="Département de la Jeunesse">
+        <div class="card-body">
+          <h3>Département de la Jeunesse</h3>
+          <p>Les jeunes constituent la force vive de l'église et bénéficient d'un encadrement adapté.
+          Ils participent à des activités spirituelles, sportives et sociales qui favorisent leur
+          développement intégral. Le département vise à fortifier leur foi dans un monde rempli de défis.
+          C'est un lieu d'épanouissement et de service pour Christ.</p>
+        </div>
+      </div>
+
+      <div class="ministere-card">
+        <img class="card-img" src="asset/IMG_5349.jpg" alt="École de Dimanche">
+        <div class="card-body">
+          <h3>École de Dimanche</h3>
+          <p>L'École de Dimanche est dédiée à l'éducation biblique des enfants dès leur bas âge.
+          Elle enseigne les vérités de la Parole de Dieu à travers des méthodes simples et adaptées.
+          Chaque enfant y apprend l'amour de Dieu et les valeurs chrétiennes essentielles.
+          Les moniteurs veillent à leur croissance spirituelle et morale.
+          Ainsi, ils deviennent de jeunes disciples enracinés en Christ.</p>
+        </div>
+      </div>
+
+      <div class="ministere-card">
+        <img class="card-img" src="asset/IMG_2936.jpg" alt="Prière Intercession">
+        <div class="card-body">
+          <h3>Prière &amp; Intercession</h3>
+          <p>Un groupe de prière dévoué qui intercède pour l'église, la nation et les besoins de nos membres.</p>
+        </div>
+      </div>
+
+      <div class="ministere-card">
+        <img class="card-img" src="asset/IMG_7588.jpg" alt="Service de la Musique">
+        <div class="card-body">
+          <h3>Département de Musique</h3>
+          <p>Le service de la musique anime les cultes et contribue à créer une atmosphère de louange.
+          Les choristes et musiciens sont engagés dans un ministère de consécration.
+          Ils préparent les cœurs à recevoir la Parole par des chants inspirés.
+          Le groupe œuvre aussi dans des concerts et veillées spirituelles.
+          Leur mission est d'élever le Nom de Jésus-Christ à travers la musique.</p>
+        </div>
+      </div>
+
+      <div class="ministere-card">
+        <img class="card-img" src="asset/IMG_3636.JPG" alt="Service de Sécurité">
+        <div class="card-body">
+          <h3>Service de Sécurité</h3>
+          <p>Le service de sécurité garantit l'ordre et la discipline durant toutes les activités.
+          Ses membres veillent à la protection des biens et des personnes.
+          Ils assurent un environnement sûr et paisible pour la louange et l'enseignement.
+          Leur mission est aussi d'accueillir avec bienveillance tout visiteur.
+          C'est un service à la fois spirituel et organisationnel.</p>
+        </div>
+      </div>
+
+      <div class="ministere-card">
+        <img class="card-img" src="asset/IMG_9562.jpg" alt="Service Média">
+        <div class="card-body">
+          <h3>Service de Média</h3>
+          <p>Le service média prend en charge la communication et la diffusion des cultes.
+          Il s'occupe de la sonorisation, de la projection et de l'archivage des messages.
+          Grâce aux outils numériques, il propage l'évangile au-delà des murs de l'église.
+          Les équipes techniques veillent à la qualité sonore et visuelle des cultes.
+          C'est une vitrine moderne pour l'annonce de la Bonne Nouvelle.</p>
+        </div>
+      </div>
+
+      <div class="ministere-card">
+        <img class="card-img" src="asset/IMG_7646.jpg" alt="Service de Protocole">
+        <div class="card-body">
+          <h3>Service de Protocole</h3>
+          <p>Le service de protocole accueille chaque fidèle avec chaleur et respect.
+          Il organise la disposition des salles et veille au bon déroulement des cultes.
+          Ses membres assistent les responsables et assurent une bonne organisation.
+          Ils incarnent l'ordre, l'hospitalité et le respect dans la maison de Dieu.
+          C'est un service qui reflète la discipline et l'amour fraternel.</p>
+        </div>
+      </div>
+
+      <div class="ministere-card">
+        <img class="card-img" src="asset/sociale.jpg" alt="Action Sociale">
+        <div class="card-body">
+          <h3>Action Sociale</h3>
+          <p>Nous servons les personnes dans le besoin à travers des programmes d'aide alimentaire,
+          scolaire et communautaire.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- CONTACT -->
+<section class="section contact" id="contact">
+  <div class="contact-inner">
+    <div>
+      <p class="section-label">Nous Contacter</p>
+      <h2 class="section-title">Venez comme vous êtes</h2>
+      <div class="contact-info">
+        <div class="contact-row">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+<h5>Adresse</h5>
+            <p>161, Avenue de Kasa-Vubu<br>Commune de Ngiri-Ngiri, Kinshasa</p>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.15 6.15l1.27-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <h5>Téléphone</h5>
+            <p>+243 815 147 352</p>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <h5>Email</h5>
+            <p>cepberee@gmail.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Prénom</label>
+            <input type="text" placeholder="Marie">
+          </div>
+          <div class="form-group">
+            <label>Nom</label>
+            <input type="text" placeholder="Kabila">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="marie@exemple.com">
+        </div>
+        <div class="form-group">
+          <label>Sujet</label>
+          <input type="text" placeholder="Je voudrais en savoir plus...">
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Votre message ici..."></textarea>
+        </div>
+        <button class="btn-primary btn-submit">Envoyer le message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Centre Évangélique Pentecôtiste Berée</div>
+  <div class="footer-links">
+  <a href="https://www.facebook.com/share/1E8WMUcNB5/?mibextid=wwXIfr" aria-label="Facebook">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/></svg>
+  </a>
+  <a href="https://www.instagram.com/cadccepberee?igsh=aTkwZzBqb2g4cA==" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+  </a>
+  <a href="https://www.youtube.com/@cepberee6964" aria-label="YouTube">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.6 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.3.6 9.3.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+  </a>
+  <a href="https://www.tiktok.com/@cepberee?_r=1&_t=ZS-96AhfSk8XB3" aria-label="TikTok">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+  </a>
+</div>
+  <p class="footer-copy">© 2026 Centre Évangélique Pentecôtiste Berée · Kinshasa, RDC</p>
+</footer>
+
+<!-- Scripts — chargés en fin de body, après le DOM -->
+<script src="js/main.js"></script>
+
+</body>
+</html>

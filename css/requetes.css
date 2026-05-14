@@ -1,0 +1,369 @@
+/* ============================================
+   requetes.css — Page Requête de Prière
+   Hérite des variables de style.css
+   ============================================ */
+
+/* ---- Reset page spécifique ---- */
+.page-requetes body { background: var(--cream); }
+
+/* ---- Hero de la page ---- */
+.req-hero {
+  background: var(--dark);
+  min-height: 280px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 7rem 2rem 3rem;
+  position: relative; overflow: hidden;
+}
+
+.req-hero__pattern {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(ellipse at 30% 50%, rgba(0,129,241,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 50%, rgba(0,129,241,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero-cross--sm {
+  width: 32px; height: 32px;
+  margin: 0 auto 1.5rem;
+  position: relative; opacity: 0.8;
+}
+
+.hero-cross--sm::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 2px; height: 100%; background: var(--gold);
+  box-shadow: 0 0 14px rgba(0,129,241,0.5);
+}
+
+.hero-cross--sm::after {
+  content: '';
+  position: absolute; top: 35%; left: 0;
+  width: 100%; height: 2px; background: var(--gold);
+  box-shadow: 0 0 14px rgba(0,129,241,0.5);
+}
+
+.req-hero__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 300; color: var(--cream);
+  line-height: 1.1; margin-top: 0.5rem;
+}
+
+.req-hero__title em {
+  font-style: italic; color: var(--gold-light);
+}
+
+/* ---- Layout principal ---- */
+.req-main {
+  padding: 4rem 4rem 6rem;
+  background: var(--cream);
+}
+
+.req-wrapper {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 360px 1fr;
+  gap: 4rem; align-items: start;
+}
+
+/* ---- Colonne gauche : aside ---- */
+.req-aside {
+  display: flex; flex-direction: column; gap: 1.8rem;
+  position: sticky; top: 100px;
+}
+
+/* Carte verset */
+.req-verse-card {
+  background: var(--dark);
+  border-radius: 10px;
+  padding: 2rem;
+  position: relative; overflow: hidden;
+}
+
+.req-verse-cross {
+  position: absolute; top: -1rem; right: -1rem;
+  width: 80px; height: 80px; opacity: 0.06;
+}
+
+.req-verse-cross::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 100%; background: var(--gold);
+}
+
+.req-verse-cross::after {
+  content: '';
+  position: absolute; top: 35%; left: 0;
+  width: 100%; height: 4px; background: var(--gold);
+}
+
+.req-verse {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem; font-weight: 300;
+  color: rgba(250,247,240,0.75);
+  line-height: 1.7;
+  border-left: 2px solid var(--gold);
+  padding-left: 1.2rem;
+}
+
+.req-verse cite {
+  display: block;
+  font-style: normal;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem; letter-spacing: 0.12em;
+  color: var(--gold); margin-top: 1rem;
+}
+
+/* Blocs info */
+.req-info-block {
+  display: flex; gap: 1rem; align-items: flex-start;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.2rem 1.4rem;
+  transition: border-color 0.3s;
+}
+
+.req-info-block:hover { border-color: var(--gold); }
+
+.req-info-icon {
+  width: 38px; height: 38px; flex-shrink: 0;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.req-info-icon svg { width: 16px; height: 16px; stroke: var(--gold); }
+
+.req-info-block h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-weight: 400;
+  color: var(--dark2); margin-bottom: 0.2rem;
+}
+
+.req-info-block p {
+  font-size: 0.82rem; color: var(--text-muted); line-height: 1.6;
+}
+
+/* Réseaux sociaux */
+.req-socials {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.4rem;
+}
+
+.req-socials .section-label { margin-bottom: 1rem; }
+
+.req-socials__icons {
+  display: flex; gap: 0.7rem; flex-wrap: wrap;
+}
+
+.req-social-btn {
+  width: 38px; height: 38px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.req-social-btn:hover { transform: translateY(-2px); opacity: 0.85; }
+.req-social-btn svg { width: 17px; height: 17px; }
+
+.req-social-btn--fb { background: #1877F2; color: #fff; }
+.req-social-btn--ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color: #fff; }
+.req-social-btn--yt { background: #FF0000; color: #fff; }
+.req-social-btn--tk { background: #010101; color: #fff; }
+.req-social-btn--tw { background: #000; color: #fff; }
+
+/* ---- Colonne droite : formulaire ---- */
+.req-form-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem 3rem;
+}
+
+/* Message succès */
+.req-success {
+  text-align: center; padding: 3rem 1rem;
+}
+
+.req-success__icon {
+  width: 72px; height: 72px; margin: 0 auto 1.5rem;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.req-success__icon svg {
+  width: 32px; height: 32px; stroke: var(--gold);
+}
+
+.req-success h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; color: var(--dark2); margin-bottom: 0.5rem;
+}
+
+.req-success p { font-size: 0.95rem; color: var(--text-muted); }
+
+/* Formulaire */
+.req-form { display: flex; flex-direction: column; gap: 1.4rem; }
+
+.req-form__group {
+  display: flex; flex-direction: column; gap: 0.45rem;
+  position: relative;
+}
+
+.req-form__group label {
+  font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.req-required { color: var(--gold); }
+.req-optional { font-size: 0.68rem; color: var(--text-muted); text-transform: none; letter-spacing: 0; }
+
+.req-form__group input,
+.req-form__group textarea,
+.req-form__group select {
+  background: var(--cream);
+  border: 1px solid rgba(0,129,241,0.2);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  color: var(--text);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.9rem; font-weight: 300;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+  appearance: none;
+}
+
+.req-form__group input:focus,
+.req-form__group textarea:focus,
+.req-form__group select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(0,129,241,0.08);
+}
+
+.req-form__group input.is-invalid,
+.req-form__group textarea.is-invalid,
+.req-form__group select.is-invalid {
+  border-color: #e53935;
+}
+
+.req-form__group textarea { resize: vertical; min-height: 150px; }
+
+.req-form__row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+}
+
+/* Select personnalisé */
+.req-select-wrap { position: relative; }
+
+.req-select-wrap select { padding-right: 2.5rem; cursor: pointer; }
+
+.req-select-arrow {
+  position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%);
+  width: 16px; height: 16px; stroke: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Message d'erreur */
+.req-error-msg {
+  font-size: 0.75rem; color: #e53935;
+  display: none;
+}
+
+.req-error-msg.visible { display: block; }
+
+/* Compteur de caractères */
+.req-char-count {
+  text-align: right;
+  font-size: 0.72rem; color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+/* Checkbox custom */
+.req-checkbox { margin: 0.2rem 0; }
+
+.req-checkbox__label {
+  display: flex; align-items: center; gap: 0.8rem;
+  cursor: pointer;
+}
+
+.req-checkbox__label input[type="checkbox"] { display: none; }
+
+.req-checkbox__box {
+  width: 20px; height: 20px; flex-shrink: 0;
+  border: 1.5px solid rgba(0,129,241,0.4);
+  border-radius: 3px;
+  background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+
+.req-checkbox__label input:checked + .req-checkbox__box {
+  background: var(--gold); border-color: var(--gold);
+}
+
+.req-checkbox__label input:checked + .req-checkbox__box::after {
+  content: '';
+  width: 10px; height: 6px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+  display: block;
+}
+
+.req-checkbox__text {
+  font-size: 0.88rem; color: var(--text-muted); line-height: 1.4;
+}
+
+/* Bouton soumettre */
+.req-submit {
+  display: flex; align-items: center; justify-content: center; gap: 0.7rem;
+  padding: 1rem 2rem;
+  background: var(--gold); color: var(--white);
+  border: none; border-radius: 4px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.82rem; letter-spacing: 0.15em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.3s;
+  width: 100%; margin-top: 0.5rem;
+}
+
+.req-submit svg { width: 16px; height: 16px; }
+
+.req-submit:hover {
+  background: var(--gold-dark); transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,129,241,0.25);
+}
+
+.req-submit:active { transform: translateY(0); }
+
+/* Lien retour */
+.req-back {
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-muted); text-decoration: none;
+  transition: color 0.3s; margin-top: 0.5rem;
+}
+
+.req-back svg { width: 14px; height: 14px; }
+.req-back:hover { color: var(--gold); }
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .req-main { padding: 3rem 2rem 5rem; }
+  .req-wrapper { grid-template-columns: 1fr; gap: 2.5rem; }
+  .req-aside { position: static; }
+  .req-form-wrap { padding: 2rem 1.5rem; }
+}
+
+@media (max-width: 600px) {
+  .req-form__row { grid-template-columns: 1fr; }
+  .req-hero { padding: 6rem 1.5rem 2.5rem; }
+}

@@ -1,0 +1,285 @@
+/* ============================================
+   donner.css — Page Donner ma vie à Jésus
+   ============================================ */
+
+/* ---- HERO ---- */
+.dv-hero {
+  background: var(--dark);
+  min-height: 500px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 5rem 2rem 4rem;
+  position: relative; overflow: hidden;
+}
+
+.dv-hero__pattern {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(0,129,241,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 50%, rgba(0,129,241,0.05) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.dv-cross {
+  width: 36px; height: 36px;
+  margin: 0 auto 2rem;
+  position: relative; opacity: 0.8;
+}
+
+.dv-cross::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 2px; height: 100%; background: var(--gold);
+  box-shadow: 0 0 14px rgba(0,129,241,0.5);
+}
+
+.dv-cross::after {
+  content: '';
+  position: absolute; top: 35%; left: 0;
+  width: 100%; height: 2px; background: var(--gold);
+  box-shadow: 0 0 14px rgba(0,129,241,0.5);
+}
+
+.dv-hero__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 300; color: var(--cream);
+  line-height: 1.1; margin-bottom: 1.5rem;
+}
+
+.dv-hero__title em { font-style: italic; color: var(--gold-light); }
+
+.dv-hero__line {
+  width: 60px; height: 2px; background: var(--gold);
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 0 12px rgba(0,129,241,0.4);
+}
+
+.dv-hero__sub {
+  max-width: 560px; font-size: 1rem;
+  color: rgba(250,247,240,0.6);
+  line-height: 1.8; margin-bottom: 2.5rem;
+  text-align: center !important;
+}
+
+.dv-hero__btn { text-decoration: none; }
+
+/* ---- QUE SE PASSE-T-IL ---- */
+.dv-cards {
+  background: var(--cream);
+  padding: 6rem 4rem;
+}
+
+.dv-cards__inner { max-width: 1100px; margin: 0 auto; }
+
+.dv-cards__header { text-align: center; margin-bottom: 4rem; }
+
+.dv-cards__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300; color: var(--dark2);
+  line-height: 1.2;
+}
+
+.dv-cards__title em { font-style: italic; color: var(--gold); }
+
+.dv-cards__line {
+  width: 60px; height: 2px; background: var(--gold);
+  margin: 1.5rem auto 0;
+}
+
+.dv-cards__grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.dv-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+
+.dv-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 3px; background: var(--gold);
+  transition: width 0.4s;
+}
+
+.dv-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,129,241,0.12); }
+.dv-card:hover::after { width: 100%; }
+
+.dv-card__icon {
+  width: 72px; height: 72px;
+  margin: 0 auto 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.dv-card__icon svg { width: 72px; height: 72px; }
+
+.dv-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem; font-weight: 400;
+  color: var(--dark2); margin-bottom: 0.8rem;
+}
+
+.dv-card p {
+  font-size: 0.88rem; color: var(--text-muted);
+  line-height: 1.75; text-align: center !important;
+}
+
+/* ---- PRIÈRE ---- */
+.dv-priere {
+  background: var(--dark2);
+  padding: 6rem 4rem;
+}
+
+.dv-priere__inner { max-width: 820px; margin: 0 auto; }
+
+.dv-priere .section-title { color: var(--cream); }
+.dv-priere .section-label { color: var(--gold); }
+
+.dv-priere__desc {
+  font-size: 0.95rem; color: rgba(250,247,240,0.55);
+  margin: 1rem 0 2rem; text-align: left !important;
+}
+
+.dv-priere__text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 1.15rem;
+  color: var(--cream); line-height: 1.9;
+  border-left: 2px solid var(--gold);
+  padding: 1.5rem 2rem;
+  background: rgba(255,255,255,0.04);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 2.5rem;
+}
+
+.dv-priere__verse blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 1.2rem;
+  color: rgba(250,247,240,0.6); line-height: 1.6;
+  border-left: 2px solid rgba(0,129,241,0.4);
+  padding-left: 1.5rem;
+}
+
+.dv-priere__verse cite {
+  display: block; font-style: normal;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem; letter-spacing: 0.12em;
+  color: var(--gold); margin-top: 0.8rem;
+}
+
+/* ---- FAQ ACCORDÉON ---- */
+.dv-faq {
+  background: var(--cream);
+  padding: 6rem 4rem;
+}
+
+.dv-faq__inner { max-width: 900px; margin: 0 auto; }
+
+.dv-faq__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300; color: var(--gold);
+  text-align: center; margin-bottom: 3rem;
+}
+
+.dv-faq__list { display: flex; flex-direction: column; gap: 0; }
+
+.dv-faq__item {
+  border-bottom: 1px solid var(--border);
+}
+
+.dv-faq__item:first-child { border-top: 1px solid var(--border); }
+
+.dv-faq__question {
+  width: 100%; display: flex; align-items: center;
+  justify-content: space-between; gap: 1rem;
+  padding: 1.4rem 1.8rem;
+  background: var(--dark2); color: var(--cream);
+  border: none; cursor: pointer;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.92rem; font-weight: 400;
+  letter-spacing: 0.02em; text-align: left;
+  transition: background 0.3s;
+}
+
+.dv-faq__question:hover { background: var(--dark); }
+
+.dv-faq__item--open .dv-faq__question { background: var(--dark); }
+
+.dv-faq__arrow {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: 1px solid rgba(0,129,241,0.4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.dv-faq__arrow svg { width: 14px; height: 14px; stroke: var(--gold); }
+
+.dv-faq__answer {
+  display: none;
+  padding: 1.5rem 1.8rem 1.8rem;
+  background: var(--white);
+  border-left: 3px solid var(--gold);
+}
+
+.dv-faq__item--open .dv-faq__answer { display: block; }
+
+.dv-faq__answer p {
+  font-size: 0.92rem; color: var(--text-muted);
+  line-height: 1.8; text-align: left !important;
+}
+
+/* ---- CTA FINAL ---- */
+.dv-cta {
+  background: var(--dark);
+  padding: 5rem 4rem;
+  text-align: center;
+}
+
+.dv-cta__inner { max-width: 700px; margin: 0 auto; }
+
+.dv-cta h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300; color: var(--cream);
+  margin-bottom: 1rem;
+}
+
+.dv-cta p {
+  font-size: 1rem; color: rgba(250,247,240,0.6);
+  margin-bottom: 2.5rem; text-align: center !important;
+}
+
+.dv-cta__buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+.dv-btn-ghost {
+  color: rgba(250,247,240,0.8) !important;
+  border-color: rgba(250,247,240,0.3) !important;
+}
+
+.dv-btn-ghost:hover {
+  border-color: var(--gold) !important;
+  color: var(--gold) !important;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .dv-cards { padding: 4rem 2rem; }
+  .dv-cards__grid { grid-template-columns: 1fr; }
+  .dv-priere { padding: 4rem 2rem; }
+  .dv-faq { padding: 4rem 2rem; }
+  .dv-cta { padding: 4rem 2rem; }
+}
+
+@media (max-width: 600px) {
+  .dv-hero { padding: 4rem 1.5rem 3rem; }
+  .dv-cta__buttons { flex-direction: column; align-items: center; }
+  .dv-faq__question { font-size: 0.82rem; padding: 1.2rem 1rem; }
+}
