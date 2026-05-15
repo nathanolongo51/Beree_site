@@ -471,13 +471,14 @@ nav {
 
 /* ---- Menu mobile ---- */
 .nav-mobile {
-  position: fixed; top: 70px; right: 0; bottom: 0;
+  position: fixed; top: 0; right: 0; bottom: 0;
   width: 270px;
   background: rgba(6,14,30,0.98);
   backdrop-filter: blur(16px);
   border-left: 1px solid rgba(0,129,241,0.2);
   padding: 2rem 1.5rem;
-  z-index: 9999;
+  padding-top: 120px;
+  z-index: 98;
   flex-direction: column;
   display: none;
 }
