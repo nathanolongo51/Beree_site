@@ -476,9 +476,8 @@ nav {
   background: rgba(6,14,30,0.98);
   backdrop-filter: blur(16px);
   border-left: 1px solid rgba(0,129,241,0.2);
-  padding: 2rem 1.5rem;
-  padding-top: 120px;
-  z-index: 98;
+  padding: 6rem 1.5rem 2rem;
+  z-index: 9999;
   flex-direction: column;
   display: none;
 }
@@ -506,6 +505,28 @@ nav {
   color: var(--gold) !important;
   padding: 0.8rem 1rem !important;
 }
+
+.nav-mobile__close {
+  display: none;
+  position: fixed; top: 1.2rem; right: 1.2rem;
+  width: 36px; height: 36px;
+  background: rgba(6,14,30,0.98);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px; cursor: pointer;
+  align-items: center; justify-content: center;
+  flex-direction: column; gap: 5px;
+  z-index: 10000;
+}
+
+.nav-mobile__close.open { display: flex; }
+
+.nav-mobile__close span {
+  display: block; width: 18px; height: 2px;
+  background: rgba(255,255,255,0.8); border-radius: 2px;
+}
+
+.nav-mobile__close span:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
+.nav-mobile__close span:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
 
 @media (max-width: 900px) {
   .une-skeleton { grid-template-columns: 1fr; }
