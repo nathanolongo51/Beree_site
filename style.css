@@ -528,6 +528,27 @@ nav {
 .nav-mobile__close span:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
 .nav-mobile__close span:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
 
+.nav-mobile__info {
+  margin-top: auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0,129,241,0.15);
+  display: flex; flex-direction: column; gap: 1rem;
+}
+
+.nav-mobile__info-row {
+  display: flex; gap: 0.8rem; align-items: flex-start;
+}
+
+.nav-mobile__info-row svg {
+  width: 15px; height: 15px; flex-shrink: 0;
+  stroke: var(--gold); margin-top: 2px;
+}
+
+.nav-mobile__info-row span {
+  font-size: 0.78rem; color: rgba(255,255,255,0.45);
+  line-height: 1.5;
+}
+
 @media (max-width: 900px) {
   .une-skeleton { grid-template-columns: 1fr; }
 }
