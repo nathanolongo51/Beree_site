@@ -1,19 +1,18 @@
 // ============================================================
-//  CONFIGURATION — remplacez par vos vraies valeurs
+//  CONFIGURATION
 // ============================================================
 const CONFIG = {
   youtube: {
-    apiKey:     'AIzaSyCLYMNOwpsCYWS5lqr5xo0hTOXunDg4BGQ',  // Google Cloud Console → YouTube Data API v3
-    channelId:  'UCjRQ94R5zltTH8MsHuFCcsg',                  // ex: UCxxxxxxxxxxxxxxxxxxxxxxxx
+    apiKey:     'AIzaSyCLYMNOwpsCYWS5lqr5xo0hTOXunDg4BGQ',
+    channelId:  'UCjRQ94R5zltTH8MsHuFCcsg',
     maxResults: 4
   },
   facebook: {
-    pageId:      '616472574875076',                           // ex: 123456789012345
+    pageId:      '616472574875076',
     accessToken: 'EAAdvIWKIA38BRcw64MvOZCN99ZCXKS2daFNeLc61ZAMqurDyZBbHXf0vSZCDsPdLVMegDtViiMyZCZC3BQkWgbYTJmAv9tCgNarRZCwHiBAdVTZCUAZAhu0mX72doPxeBbwsvL34KmtlySxT4mX5DgIxzcmLqg9Erh0jNPDmG5XTCnfC4jG5PdHY1FbrrceyvRMKrnk2Dxa72KHrNZCay3AW3zFNwmZB',
     maxResults:  4
   }
 };
-// ============================================================
 
 let activeTab = 'youtube';
 
@@ -39,21 +38,30 @@ function truncate(str, n) {
 }
 
 function showSkeleton() {
-  document.getElementById('une-skeleton').style.display = 'grid';
-  document.getElementById('une-grid').style.display    = 'none';
-  document.getElementById('une-error').style.display   = 'none';
+  const s = document.getElementById('une-skeleton');
+  const g = document.getElementById('une-grid');
+  const e = document.getElementById('une-error');
+  if (s) s.style.display = 'grid';
+  if (g) g.style.display = 'none';
+  if (e) e.style.display = 'none';
 }
 
 function showGrid() {
-  document.getElementById('une-skeleton').style.display = 'none';
-  document.getElementById('une-grid').style.display     = 'grid';
-  document.getElementById('une-error').style.display    = 'none';
+  const s = document.getElementById('une-skeleton');
+  const g = document.getElementById('une-grid');
+  const e = document.getElementById('une-error');
+  if (s) s.style.display = 'none';
+  if (g) g.style.display = 'grid';
+  if (e) e.style.display = 'none';
 }
 
 function showError() {
-  document.getElementById('une-skeleton').style.display = 'none';
-  document.getElementById('une-grid').style.display     = 'none';
-  document.getElementById('une-error').style.display    = 'flex';
+  const s = document.getElementById('une-skeleton');
+  const g = document.getElementById('une-grid');
+  const e = document.getElementById('une-error');
+  if (s) s.style.display = 'none';
+  if (g) g.style.display = 'none';
+  if (e) e.style.display = 'flex';
 }
 
 // ---- Rendu des cards ----------------------------------------
@@ -72,7 +80,7 @@ function renderCards(items, platform) {
        </svg>`;
 
   const badgeClass = platform === 'youtube' ? 'une-badge--yt' : 'une-badge--fb';
-  const badgeLabel = platform === 'youtube' ? 'YouTube'       : 'Facebook';
+  const badgeLabel = platform === 'youtube' ? 'YouTube' : 'Facebook';
   const playBtn    = platform === 'youtube'
     ? `<div class="play-btn"><svg viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>`
     : '';
@@ -80,7 +88,6 @@ function renderCards(items, platform) {
     ? `<div class="play-btn play-btn--sm"><svg viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>`
     : '';
 
-  // Grande card
   const featuredHTML = `
     <div class="une-card une-card--featured">
       <div class="une-card__img-wrap">
@@ -101,7 +108,6 @@ function renderCards(items, platform) {
       </div>
     </div>`;
 
-  // Petites cards
   const sideHTML = rest.slice(0, 3).map(item => `
     <div class="une-card une-card--small">
       <div class="une-card__img-wrap">
@@ -131,7 +137,6 @@ async function loadYoutube() {
   const res  = await fetch(url);
   if (!res.ok) throw new Error('YouTube API error: ' + res.status);
   const data = await res.json();
-
   return (data.items || []).map(item => ({
     title:       item.snippet.title,
     description: item.snippet.description,
@@ -149,7 +154,6 @@ async function loadFacebook() {
   const res  = await fetch(url);
   if (!res.ok) throw new Error('Facebook API error: ' + res.status);
   const data = await res.json();
-
   return (data.data || []).map(item => ({
     title:       item.story || truncate(item.message, 80) || 'Publication Facebook',
     description: item.message || '',
@@ -171,40 +175,41 @@ async function loadContent(platform) {
   }
 }
 
-// ---- Chargement initial -------------------------------------
+// ---- Un seul DOMContentLoaded -------------------------------
 document.addEventListener('DOMContentLoaded', () => {
-  loadContent('youtube');
-});
 
-// ---- Chargement initial -------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
-  loadContent('youtube');
-
- const hamburger  = document.getElementById('nav-hamburger');
-const mobileMenu = document.getElementById('nav-mobile');
-const closeBtn   = document.getElementById('nav-mobile-close');
-
-if (hamburger && mobileMenu) {
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    mobileMenu.classList.toggle('open');
-    if (closeBtn) closeBtn.classList.toggle('open');
-  });
-
-  mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      if (closeBtn) closeBtn.classList.remove('open');
-    });
-  });
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      closeBtn.classList.remove('open');
-    });
+  // YouTube/Facebook — seulement sur index.html
+  if (document.getElementById('une-skeleton')) {
+    loadContent('youtube');
   }
-}
+
+  // Menu hamburger — toutes les pages
+  const hamburger  = document.getElementById('nav-hamburger');
+  const mobileMenu = document.getElementById('nav-mobile');
+  const closeBtn   = document.getElementById('nav-mobile-close');
+
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      if (closeBtn) closeBtn.classList.toggle('open');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        if (closeBtn) closeBtn.classList.remove('open');
+      });
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        closeBtn.classList.remove('open');
+      });
+    }
+  }
+
 });
