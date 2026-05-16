@@ -178,6 +178,18 @@ async function loadContent(platform) {
 // ---- Un seul DOMContentLoaded -------------------------------
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ---- Bouton retour en haut ----------------------------------
+const btnTop = document.getElementById('btn-top');
+if (btnTop) {
+  window.addEventListener('scroll', () => {
+    btnTop.classList.toggle('visible', window.scrollY > 100);
+  });
+
+  btnTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
   // YouTube/Facebook — seulement sur index.html
   if (document.getElementById('une-skeleton')) {
     loadContent('youtube');

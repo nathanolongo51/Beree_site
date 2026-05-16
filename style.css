@@ -549,6 +549,29 @@ nav {
   line-height: 1.5;
 }
 
+.btn-top {
+  position: fixed; bottom: 2rem; right: 2rem;
+  width: 44px; height: 44px;
+  background: var(--gold); color: var(--white);
+  border: none; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 999;
+  opacity: 0; pointer-events: none;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(0,129,241,0.3);
+}
+
+.btn-top.visible {
+  opacity: 1; pointer-events: auto;
+}
+
+.btn-top:hover {
+  background: var(--gold-dark);
+  transform: translateY(-3px);
+}
+
+.btn-top svg { width: 20px; height: 20px; }
+
 @media (max-width: 900px) {
   .une-skeleton { grid-template-columns: 1fr; }
 }
