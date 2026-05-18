@@ -1,0 +1,154 @@
+/* ============================================
+   vie-eglise.css — Page Vie de l'Église
+   ============================================ */
+
+/* ---- HERO ---- */
+.ve-hero {
+  background: var(--dark);
+  min-height: 420px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 5rem 2rem 4rem;
+  position: relative; overflow: hidden;
+}
+
+.ve-hero__pattern {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(0,129,241,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 50%, rgba(0,129,241,0.05) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.ve-cross {
+  width: 36px; height: 36px;
+  margin: 0 auto 2rem; position: relative; opacity: 0.8;
+}
+
+.ve-cross::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 2px; height: 100%; background: var(--gold);
+  box-shadow: 0 0 14px rgba(0,129,241,0.5);
+}
+
+.ve-cross::after {
+  content: ''; position: absolute; top: 35%; left: 0;
+  width: 100%; height: 2px; background: var(--gold);
+  box-shadow: 0 0 14px rgba(0,129,241,0.5);
+}
+
+.ve-hero__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 300; color: var(--cream);
+  line-height: 1.1; margin-bottom: 1.5rem;
+}
+
+.ve-hero__title em { font-style: italic; color: var(--gold-light); }
+
+.ve-hero__line {
+  width: 60px; height: 2px; background: var(--gold);
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 0 12px rgba(0,129,241,0.4);
+}
+
+.ve-hero__sub {
+  max-width: 600px; font-size: 1rem;
+  color: rgba(250,247,240,0.6);
+  line-height: 1.8; text-align: center !important;
+}
+
+/* ---- SECTIONS ---- */
+.ve-section { background: var(--cream); }
+.ve-section--dark { background: var(--dark2); }
+
+.ve-section--dark .section-title { color: var(--cream); }
+.ve-section--dark .section-label { color: var(--gold); }
+.ve-section--dark .ve-section-desc { color: rgba(250,247,240,0.55); }
+.ve-section--dark .ve-verse { border-color: rgba(0,129,241,0.3); }
+.ve-section--dark .ve-verse span { color: rgba(250,247,240,0.6); }
+
+.ve-inner { max-width: 1100px; margin: 0 auto; }
+
+.ve-section-header { margin-bottom: 3rem; }
+
+.ve-section-desc {
+  font-size: 0.95rem; color: var(--text-muted);
+  line-height: 1.8; max-width: 700px;
+  margin: 0.8rem 0 1.5rem; text-align: left !important;
+}
+
+/* ---- Verset biblique ---- */
+.ve-verse {
+  display: inline-flex; flex-direction: column; gap: 0.4rem;
+  border-left: 2px solid var(--gold);
+  padding-left: 1rem; margin-top: 0.5rem;
+}
+
+.ve-verse span {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 0.95rem;
+  color: var(--text-muted); line-height: 1.5;
+}
+
+.ve-verse cite {
+  font-style: normal; font-family: 'Jost', sans-serif;
+  font-size: 0.68rem; letter-spacing: 0.12em;
+  color: var(--gold); text-transform: uppercase;
+}
+
+/* ---- Référence article ---- */
+.ve-article {
+  font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.5rem !important;
+  font-family: 'Jost', sans-serif;
+}
+
+/* ---- Grid 1 colonne ---- */
+.ve-grid-1 {
+  grid-template-columns: 1fr !important;
+  max-width: 500px;
+}
+
+/* ---- CTA ---- */
+.ve-cta {
+  background: var(--dark);
+  padding: 5rem 4rem; text-align: center;
+}
+
+.ve-cta__inner { max-width: 700px; margin: 0 auto; }
+
+.ve-cta h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300; color: var(--cream); margin-bottom: 1rem;
+}
+
+.ve-cta p {
+  font-size: 1rem; color: rgba(250,247,240,0.6);
+  margin-bottom: 2.5rem; text-align: center !important;
+}
+
+.ve-cta__buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+.ve-btn-ghost {
+  color: rgba(250,247,240,0.8) !important;
+  border-color: rgba(250,247,240,0.3) !important;
+}
+
+.ve-btn-ghost:hover {
+  border-color: var(--gold) !important;
+  color: var(--gold) !important;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .ve-hero { padding: 4rem 1.5rem 3rem; }
+  .ve-cta { padding: 4rem 2rem; }
+  .ve-grid-1 { max-width: 100%; }
+}
+
+@media (max-width: 600px) {
+  .ve-cta__buttons { flex-direction: column; align-items: center; }
+}

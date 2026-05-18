@@ -18,7 +18,7 @@
   <ul class="nav-links">
     <li><a href="#horaires">Horaires des cultes</a></li>
     <li><a href="#about">À Propos</a></li>
-    <li><a href="#ministeres">Ministères</a></li>
+    <li><a href="vie-d-eglise.html">Vie de l'église</a></li>
     <li><a href="requetes.html" class="nav-cta">Requête de prière</a></li>
   </ul>
 
@@ -32,7 +32,7 @@
 <div class="nav-mobile" id="nav-mobile">
   <a href="#horaires">Horaires des cultes</a>
   <a href="#about">À Propos</a>
-  <a href="#ministeres">Ministères</a>
+  <a href="vie-d-eglise.html">Vie de l'église</a>
   <a href="requetes.html" class="nav-cta-mobile">Requête de prière</a>
 
   <div class="nav-mobile__info">
@@ -452,33 +452,31 @@
       </div>
     </div>
     <div>
-      <div class="contact-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Prénom</label>
-            <input type="text" placeholder="Marie">
-          </div>
-          <div class="form-group">
-            <label>Nom</label>
-            <input type="text" placeholder="Kabila">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" placeholder="marie@exemple.com">
-        </div>
-        <div class="form-group">
-          <label>Sujet</label>
-          <input type="text" placeholder="Je voudrais en savoir plus...">
-        </div>
-        <div class="form-group">
-          <label>Message</label>
-          <textarea placeholder="Votre message ici..."></textarea>
-        </div>
-        <button class="btn-primary btn-submit">Envoyer le message</button>
-      </div>
+     <div class="contact-form">
+  <div class="form-row">
+    <div class="form-group">
+      <label>Prénom</label>
+      <input type="text" id="c-prenom" placeholder="Marie">
+    </div>
+    <div class="form-group">
+      <label>Nom</label>
+      <input type="text" id="c-nom" placeholder="Kabila">
     </div>
   </div>
+  <div class="form-group">
+    <label>Email</label>
+    <input type="email" id="c-email" placeholder="marie@exemple.com">
+  </div>
+  <div class="form-group">
+  <label>Téléphone *</label>
+  <input type="tel" id="c-tel" placeholder="+243 8XX XXX XXX" required>
+</div>
+  <div class="form-group">
+    <label>Message</label>
+    <textarea id="c-message" placeholder="Votre message ici..."></textarea>
+  </div>
+  <button class="btn-primary btn-submit" id="c-submit">Envoyer le message</button>
+</div>
 </section>
 
 

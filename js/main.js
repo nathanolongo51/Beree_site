@@ -178,6 +178,36 @@ async function loadContent(platform) {
 // ---- Un seul DOMContentLoaded -------------------------------
 document.addEventListener('DOMContentLoaded', () => {
 
+// ---- Formulaire contact WhatsApp ----------------------------
+const WHATSAPP_NUMBER = '243960103031'; // Remplacez par le vrai numéro
+
+const contactSubmit = document.getElementById('c-submit');
+if (contactSubmit) {
+  contactSubmit.addEventListener('click', () => {
+ const prenom  = document.getElementById('c-prenom').value.trim();
+    const nom     = document.getElementById('c-nom').value.trim();
+    const email   = document.getElementById('c-email').value.trim();
+    const tel     = document.getElementById('c-tel').value.trim();
+    const message = document.getElementById('c-message').value.trim();
+
+    if (!prenom || !tel || !message) {
+      alert('Veuillez remplir les champs obligatoires : prénom, téléphone et message.');
+      return;
+    }
+
+    const texte = encodeURIComponent(
+      `Contact Église CEP Berée - Message du site Web\n\n` +
+      `Je m'appelle ${prenom} ${nom},\n` +
+      `${message}\n` +
+      `Pour le suivi, mon num est le ${tel}\n` +
+      (email ? `\nEmail : ${email}\n` : '')
+    );
+
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texte}`, '_blank');
+  });
+}
+
+
   // ---- Bouton retour en haut ----------------------------------
 const btnTop = document.getElementById('btn-top');
 if (btnTop) {
