@@ -843,6 +843,50 @@ nav {
   color: var(--gold); margin-top: 1.5rem;
 }
 
+/* ---- Photos pasteurs ---- */
+.about-pasteurs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.about-pasteur {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.8rem;
+}
+
+.about-pasteur__img-wrap {
+  width: 100%; height: 240px;
+  border-radius: 8px;
+  border: 2px solid var(--gold);
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,129,241,0.2);
+}
+
+.about-pasteur__img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top;
+}
+
+.about-pasteur__info { text-align: center; }
+
+.about-pasteur__info h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem; font-weight: 400;
+  color: var(--gold-light); margin-bottom: 0.2rem;
+}
+
+.about-pasteur__info span {
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--gold);
+}
+
+@media (max-width: 500px) {
+  .about-pasteurs {
+    grid-template-columns: 1fr;
+  }
+}
 /* ---- MINISTÈRES ---- */
 .ministeres-inner { max-width: 1100px; margin: 0 auto; }
 
@@ -1102,6 +1146,15 @@ footer {
     max-width: 280px;
     text-align: center;
   }
+
+  .about-pasteurs {
+  gap: 2.5rem;
+}
+
+.about-pasteur {
+  flex: 0 0 auto;
+}
+
 }
 
 
@@ -1168,6 +1221,11 @@ footer {
 .section { padding: 4rem 2rem; }
 .horaires-inner, .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
 footer { padding: 1rem; flex-direction: column; text-align: center; }
+
+.about-pasteurs {
+  flex-direction: column;
+  align-items: flex-start;
+}
   
 }
 
@@ -1218,5 +1276,10 @@ footer { padding: 1rem; flex-direction: column; text-align: center; }
 .nav-hamburger { display: flex; }
 .section { padding: 4rem 2rem; }
 footer { padding: 1rem; flex-direction: column; text-align: center; }
-    
+
+.about-pasteurs {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 }
