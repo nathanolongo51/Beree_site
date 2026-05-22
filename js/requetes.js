@@ -86,18 +86,13 @@ if (form) {
     const nomAffiche = anon ? 'Anonyme' : nom;
 
     const texte = encodeURIComponent(
-      `🙏 *Requête de Prière — CEP Berée*\n` +
-      `──────────────────────\n` +
-      `Nom     : ${nomAffiche}\n` +
-      `Pays    : ${pays}\n` +
-      (email ? `Email   : ${email}\n` : '') +
-      (tel   ? `Tél     : ${tel}\n`   : '') +
-      `──────────────────────\n` +
-      `${message}\n` +
-      `──────────────────────\n` +
-      `_Envoyé depuis cepberee.org_`
-    );
-
+  `Requête de Prière venat du site Web CEP Berée\n\n` +
+  `Je m'appelle *${nomAffiche}*,\n` +
+  `Je viens du *${pays}* et j'ai besoin de prière pour :\n` +
+  `${message}\n\n` +
+  (tel   ? `Pour le suivi, mon num est le *${tel}*\n`   : '') +
+  (email ? `Email : ${email}\n` : '')
+  );
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texte}`, '_blank');
   });
 }

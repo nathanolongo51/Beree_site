@@ -249,14 +249,14 @@
 
 .bt-submit {
   display: flex; align-items: center; justify-content: center; gap: 0.7rem;
-  padding: 1rem 2rem; background: #25D366; color: var(--white);
+  padding: 1rem 2rem; background: var(--gold); color: var(--white);
   border: none; border-radius: 4px; font-family: 'Jost', sans-serif;
   font-size: 0.82rem; letter-spacing: 0.15em; text-transform: uppercase;
   cursor: pointer; transition: all 0.3s; width: 100%; margin-top: 0.5rem;
 }
 
 .bt-submit svg { width: 18px; height: 18px; flex-shrink: 0; }
-.bt-submit:hover { background: #1ebe57; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(37,211,102,0.3); }
+.bt-submit:hover { background: var(--gold-light) }
 
 .bt-back {
   display: block; text-align: center;

@@ -36,7 +36,7 @@ p {
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0; padding-left: 4rem; padding-right: 4rem;
+  padding: 0; padding-left: 1rem; padding-right: 2rem;
   background: rgba(6,14,30,0.93);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(0,129,241,0.2);
@@ -45,7 +45,7 @@ nav {
 }
 
 .nav-logo-img {
-  height: 120px;
+  height: 110px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -880,6 +880,50 @@ nav {
 .about-pasteur__info span {
   font-size: 0.7rem; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--gold);
+}
+
+.about-history p,
+.about-history blockquote {
+  color: rgba(250,247,240,0.6);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  margin-bottom: 1.2rem;
+}
+
+.about-history blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  border-left: 2px solid var(--gold);
+  padding-left: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.about-vision p {
+  color: rgba(250,247,240,0.6);
+  font-size: 0.95rem;
+  line-height: 1.85;
+}
+
+.about-join-us {
+  margin-top: 2rem !important;
+  padding: 1.5rem !important;
+  background: rgba(0,129,241,0.05) !important;
+  border-left: 3px solid var(--gold) !important;
+  border-radius: 4px !important;
+}
+
+.about-join-us h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; font-weight: 400;
+  color: var(--gold-light) !important;
+  margin-bottom: 0.6rem !important;
+}
+
+.about-join-us p {
+  color: rgba(250,247,240,0.6) !important;
+  font-size: 0.9rem !important;
+  line-height: 1.7 !important;
+  margin-bottom: 0 !important;
 }
 
 @media (max-width: 500px) {
