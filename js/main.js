@@ -254,4 +254,39 @@ if (btnTop) {
     }
   }
 
+// ---- Dropdown À Propos menu mobile ----------------------
+const dropdownBtn  = document.getElementById('dropdown-about-btn');
+const dropdownList = document.getElementById('dropdown-about');
+
+if (dropdownBtn && dropdownList) {
+  dropdownBtn.addEventListener('click', () => {
+    dropdownBtn.classList.toggle('open');
+    dropdownList.classList.toggle('open');
+  });
+}
+
+// ---- Dropdown À Propos nav desktop ----------------------
+const navDropdownBtn  = document.getElementById('nav-dropdown-btn');
+const navDropdownList = document.getElementById('nav-dropdown-list');
+
+if (navDropdownBtn && navDropdownList) {
+  navDropdownBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navDropdownList.classList.toggle('open');
+    navDropdownBtn.querySelector('svg').style.transform =
+      navDropdownList.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+  });
+
+  navDropdownList.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+
+  document.addEventListener('click', () => {
+    navDropdownList.classList.remove('open');
+    if (navDropdownBtn.querySelector('svg')) {
+      navDropdownBtn.querySelector('svg').style.transform = 'rotate(0deg)';
+    }
+  });
+}
+
 });

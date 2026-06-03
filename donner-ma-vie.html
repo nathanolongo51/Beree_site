@@ -18,11 +18,18 @@
   </div>
   <ul class="nav-links">
     <li><a href="index.html">Acceuil</a></li>
-      <li><a href="index.html#about">À Propos</a></li>
-      <li><a href="#horaires">Horaires des cultes</a></li>
+      <li class="nav-dropdown">
+    <button class="nav-dropdown__btn" id="nav-dropdown-btn">
+      À Propos
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <ul class="nav-dropdown__list" id="nav-dropdown-list">
+      <li><a href="index.html#about">Notre Histoire</a></li>
+      <li><a href="index.html#horaires">Horaires des cultes</a></li>
+    </ul>
+  </li>
       <li><a href="vie-d-eglise.html">Vie de l'église</a></li>
       <li><a href="requetes.html">Requête de prière</a></li>
-      <li><a href="index.html#horaires" class="nav-cta">Nous Rejoindre</a></li>
   </ul>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -31,11 +38,18 @@
 
 <div class="nav-mobile" id="nav-mobile">
  <a href="index.html">Acceuil</a>
-      <a href="index.html#about">À Propos</a>
-      <a href="#horaires">Horaires des cultes</a>
+      <div class="nav-mobile__dropdown">
+    <button class="nav-mobile__dropdown-btn" id="dropdown-about-btn">
+      À Propos
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="nav-mobile__dropdown-list" id="dropdown-about">
+      <a href="index.html#about">Notre Histoire</a>
+      <a href="index.html#horaires">Horaires des cultes</a>
+    </div>
+  </div>
       <a href="vie-d-eglise.html">Vie de l'église</a>
       <a href="requetes.html">Requête de prière</a>
-      <a href="index.html#horaires" class="nav-cta-mobile">Nous Rejoindre</a>
 
       <div class="nav-mobile__info">
     <div class="nav-mobile__info-row">
