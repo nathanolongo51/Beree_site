@@ -1288,7 +1288,7 @@ footer {
   }
 
   body {
-    padding-top: 70px;
+    padding-top: 50px;
   }
 
   .btn-primary,
@@ -1363,7 +1363,7 @@ footer {
   }
 
   body {
-    padding-top: 70px;
+    padding-top: 50px;
   }
 .ministeres-grid { grid-template-columns: 1fr; }
 .form-row { grid-template-columns: 1fr; }
@@ -1421,7 +1421,7 @@ footer { padding: 1rem; flex-direction: column; text-align: center; }
   }
 
   body {
-    padding-top: 70px;
+    padding-top: 50px;
   }
 .nav-links { display: none; }
 .nav-hamburger { display: flex; }
