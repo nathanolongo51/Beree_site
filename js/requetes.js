@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ---- Numéro WhatsApp de l'église -----------------------
-const WHATSAPP_NUMBER = '243821462002'; // Remplacez par le vrai numéro
+const WHATSAPP_NUMBER = '243815147352';
 
 // ---- Soumission du formulaire --------------------------
 if (form) {

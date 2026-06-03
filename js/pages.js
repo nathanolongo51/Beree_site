@@ -2,7 +2,7 @@
 //  pages.js — WhatsApp pour toutes les pages
 // ============================================================
 
-const WHATSAPP_NUMBER = '243810990473';
+const WHATSAPP_NUMBER = '243815147352';
 
 document.addEventListener('DOMContentLoaded', () => {
 

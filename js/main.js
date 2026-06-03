@@ -179,7 +179,7 @@ async function loadContent(platform) {
 document.addEventListener('DOMContentLoaded', () => {
 
 // ---- Formulaire contact WhatsApp ----------------------------
-const WHATSAPP_NUMBER = '243960103031'; // Remplacez par le vrai numéro
+const WHATSAPP_NUMBER = '243815147352'; //
 
 const contactSubmit = document.getElementById('c-submit');
 if (contactSubmit) {
