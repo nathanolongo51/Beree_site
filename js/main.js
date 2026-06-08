@@ -89,60 +89,77 @@ function renderCards(items, platform) {
     : '';
 
   const featuredHTML = `
-    <div class="une-card une-card--featured">
-      <div class="une-card__img-wrap">
-        <img src="${featured.thumbnail}" alt="${featured.title}" loading="lazy">
-        <span class="une-badge ${badgeClass}">${badgeLabel}</span>
-        ${playBtn}
-      </div>
-      <div class="une-card__body">
-        <div class="une-card__meta">
-          ${platformIcon}
-          <span class="une-card__date">${formatDate(featured.date)}</span>
-        </div>
-        <h3 class="une-card__title">${truncate(featured.title, 90)}</h3>
-        <p class="une-card__excerpt">${truncate(featured.description, 180)}</p>
-        <a href="${featured.url}" target="_blank" rel="noopener" class="une-card__link">
-          Voir sur ${badgeLabel} <span>→</span>
-        </a>
-      </div>
-    </div>`;
+<a href="${featured.url}" target="_blank" rel="noopener" class="une-card une-card--featured">
+  <div class="une-card__img-wrap">
+    <img src="${featured.thumbnail}" alt="${featured.title}" loading="lazy">
+    <span class="une-badge ${badgeClass}">${badgeLabel}</span>
+    ${playBtn}
+  </div>
 
-  const sideHTML = rest.slice(0, 3).map(item => `
-    <div class="une-card une-card--small">
-      <div class="une-card__img-wrap">
-        <img src="${item.thumbnail}" alt="${item.title}" loading="lazy">
-        ${playBtnSm}
-      </div>
-      <div class="une-card__body">
-        <div class="une-card__meta">
-          ${platformIcon}
-          <span class="une-card__date">${formatDate(item.date)}</span>
-        </div>
-        <h3 class="une-card__title">${truncate(item.title, 65)}</h3>
-        <a href="${item.url}" target="_blank" rel="noopener" class="une-card__link">
-          Voir <span>→</span>
-        </a>
-      </div>
-    </div>`).join('');
+  <div class="une-card__body">
+    <div class="une-card__meta">
+      ${platformIcon}
+      <span class="une-card__date">${formatDate(featured.date)}</span>
+    </div>
+
+    <h3 class="une-card__title">${truncate(featured.title, 90)}</h3>
+    <p class="une-card__excerpt">${truncate(featured.description, 180)}</p>
+
+    <span class="une-card__link">
+      Voir sur ${badgeLabel} <span>→</span>
+    </span>
+  </div>
+</a>`;
+
+const sideHTML = rest.slice(0, 3).map(item => `
+<a href="${item.url}" target="_blank" rel="noopener" class="une-card une-card--small">
+  <div class="une-card__img-wrap">
+    <img src="${item.thumbnail}" alt="${item.title}" loading="lazy">
+    ${playBtnSm}
+  </div>
+
+  <div class="une-card__body">
+    <div class="une-card__meta">
+      ${platformIcon}
+      <span class="une-card__date">${formatDate(item.date)}</span>
+    </div>
+
+    <h3 class="une-card__title">${truncate(item.title, 65)}</h3>
+
+    <span class="une-card__link">
+      Voir →
+    </span>
+  </div>
+</a>
+`).join('');
 
   grid.innerHTML = `${featuredHTML}<div class="une-side">${sideHTML}</div>`;
   showGrid();
 }
 
-// ---- YouTube ------------------------------------------------
+// ---- Youtube -----------------------------------------------
 async function loadYoutube() {
   const { apiKey, channelId, maxResults } = CONFIG.youtube;
-  const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=${maxResults}&type=video`;
-  const res  = await fetch(url);
-  if (!res.ok) throw new Error('YouTube API error: ' + res.status);
-  const data = await res.json();
+
+  // Étape 1 — récupérer l'ID de la playlist uploads (1 unité)
+  const channelUrl = `https://www.googleapis.com/youtube/v3/channels?key=${apiKey}&id=${channelId}&part=contentDetails`;
+  const channelRes = await fetch(channelUrl);
+  if (!channelRes.ok) throw new Error('YouTube channel error: ' + channelRes.status);
+  const channelData = await channelRes.json();
+  const uploadPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
+
+  // Étape 2 — récupérer les dernières vidéos (1 unité)
+  const playlistUrl = `https://www.googleapis.com/youtube/v3/playlistItems?key=${apiKey}&playlistId=${uploadPlaylistId}&part=snippet&maxResults=${maxResults}`;
+  const playlistRes = await fetch(playlistUrl);
+  if (!playlistRes.ok) throw new Error('YouTube playlist error: ' + playlistRes.status);
+  const data = await playlistRes.json();
+
   return (data.items || []).map(item => ({
     title:       item.snippet.title,
     description: item.snippet.description,
     thumbnail:   item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.default?.url,
     date:        item.snippet.publishedAt,
-    url:         `https://www.youtube.com/watch?v=${item.id.videoId}`
+    url:         `https://www.youtube.com/watch?v=${item.snippet.resourceId.videoId}`
   }));
 }
 
