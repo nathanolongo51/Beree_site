@@ -1250,6 +1250,80 @@ footer {
 
 .footer-links a:hover { color: var(--gold); }
 
+/* ---- Popup Événement Facebook ---- */
+#event-popup {
+  display: none;
+  position: fixed; inset: 0;
+  z-index: 99999;
+  align-items: center; justify-content: center;
+}
+
+#event-popup.event-popup--visible { display: flex; }
+
+.event-popup__overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+}
+
+.event-popup__box {
+  position: relative; z-index: 1;
+  background: #ffffff;
+  border-radius: 12px; overflow: hidden;
+  /* MODIFIÉ : Réduit de 420px à 360px pour un rendu plus fin et discret */
+  max-width: 360px; width: 90%;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  animation: popupIn 0.4s ease;
+}
+
+@keyframes popupIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.event-popup__box img {
+  width: 100%; display: block;
+  /* MODIFIÉ : Réduit de 480px à 380px max pour éviter d'envahir tout l'écran verticalement */
+  max-height: 380px; object-fit: cover;
+}
+
+.event-popup__close {
+  position: absolute; top: 0.8rem; right: 0.8rem;
+  width: 32px; height: 32px;
+  background: rgba(0,0,0,0.6); color: #ffffff;
+  border: none; border-radius: 50%;
+  font-size: 0.85rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2; transition: background 0.2s;
+}
+
+.event-popup__close:hover { background: var(--gold, #d4af37); }
+
+/* MODIFIÉ : Un peu moins de padding pour compacter le tout */
+.event-popup__body { padding: 1rem 1.2rem 1.2rem; }
+
+.event-popup__msg {
+  font-size: 0.85rem; 
+  color: #4a4a4a !important; 
+  line-height: 1.5; 
+  margin-bottom: 1rem;
+  text-align: left !important;
+}
+
+.event-popup__btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+  padding: 0.8rem; background: #1877F2; color: #ffffff;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; border-radius: 4px; transition: background 0.3s;
+}
+
+.event-popup__btn:hover { background: #0d65d9; }
+
+@media (max-width: 500px) {
+  .event-popup__box { max-width: 92%; }
+}
+
 /* ---- RESPONSIVE ---- */
 
 @media (max-width: 900px) {

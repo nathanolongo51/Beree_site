@@ -1,5 +1,5 @@
 // ============================================================
-//  CONFIGURATION
+// CONFIGURATION
 // ============================================================
 const CONFIG = {
   youtube: {
@@ -32,6 +32,7 @@ function formatDate(iso) {
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
+// Votre fonction globale existante
 function truncate(str, n) {
   if (!str) return '';
   return str.length > n ? str.slice(0, n).trimEnd() + '…' : str;
@@ -141,14 +142,12 @@ const sideHTML = rest.slice(0, 3).map(item => `
 async function loadYoutube() {
   const { apiKey, channelId, maxResults } = CONFIG.youtube;
 
-  // Étape 1 — récupérer l'ID de la playlist uploads (1 unité)
   const channelUrl = `https://www.googleapis.com/youtube/v3/channels?key=${apiKey}&id=${channelId}&part=contentDetails`;
   const channelRes = await fetch(channelUrl);
   if (!channelRes.ok) throw new Error('YouTube channel error: ' + channelRes.status);
   const channelData = await channelRes.json();
   const uploadPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
 
-  // Étape 2 — récupérer les dernières vidéos (1 unité)
   const playlistUrl = `https://www.googleapis.com/youtube/v3/playlistItems?key=${apiKey}&playlistId=${uploadPlaylistId}&part=snippet&maxResults=${maxResults}`;
   const playlistRes = await fetch(playlistUrl);
   if (!playlistRes.ok) throw new Error('YouTube playlist error: ' + playlistRes.status);
@@ -180,7 +179,7 @@ async function loadFacebook() {
   }));
 }
 
-// ---- Chargement principal -----------------------------------
+// ---- Chargement principal Grille (YT/FB) -------------------
 async function loadContent(platform) {
   showSkeleton();
   try {
@@ -192,57 +191,186 @@ async function loadContent(platform) {
   }
 }
 
-// ---- Un seul DOMContentLoaded -------------------------------
-document.addEventListener('DOMContentLoaded', () => {
 
-// ---- Formulaire contact WhatsApp ----------------------------
-const WHATSAPP_NUMBER = '243815147352'; //
+// ---- Popup événements Facebook (Détecteur intelligent) ----
+async function loadPopupEvenement() {
+  const { pageId, accessToken } = CONFIG.facebook;
 
-const contactSubmit = document.getElementById('c-submit');
-if (contactSubmit) {
-  contactSubmit.addEventListener('click', () => {
- const prenom  = document.getElementById('c-prenom').value.trim();
-    const nom     = document.getElementById('c-nom').value.trim();
-    const email   = document.getElementById('c-email').value.trim();
-    const tel     = document.getElementById('c-tel').value.trim();
-    const message = document.getElementById('c-message').value.trim();
+  // On a retiré le bloc "localStorage" pour que ça s'affiche TOUT LE TEMPS
 
-    if (!prenom || !tel || !message) {
-      alert('Veuillez remplir les champs obligatoires : prénom, téléphone et message.');
-      return;
+  const KEYWORDS = [
+    'événement', 'evenement', 'mardi enseignement', 'jeudi enseignement', 'culte dominical',
+    'conférence', 'rencontre des jeunes', 'retraite', 'concert', 'séminaire', 'seminaire',
+    'service spécial', 'prière', 'priere', 'convention', 'semaine de grâce', 'semaine de grace', 'semaine', 
+    'réveil', 'reveil', 'jeûne', 'jeune', 'intercession', 'nuit de prière', 'nuit de priere', 
+    'évangélisation', 'evangelisation', 'rencontre des femmes', 'deliez-le', 'deliezle', 'sainte cène', 'saint cene'
+  ];
+
+  try {
+    const fields = 'id,message,story,full_picture,created_time,permalink_url';
+    const url    = `https://graph.facebook.com/v19.0/${pageId}/posts?fields=${fields}&limit=50&access_token=${accessToken}`;
+    const res    = await fetch(url);
+    if (!res.ok) throw new Error(`Erreur HTTP Facebook Popup: ${res.status}`);
+    const data   = await res.json();
+
+    const now = new Date();
+    const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    // 1. Filtrer les publications récentes
+    const matchingPosts = (data.data || []).filter(item => {
+      const text = ((item.message || '') + (item.story || '')).toLowerCase();
+      const postDate = new Date(item.created_time);
+      const joursEcoules = (now - postDate) / (1000 * 60 * 60 * 24);
+
+      return item.full_picture && joursEcoules <= 30 && KEYWORDS.some(kw => text.includes(kw.toLowerCase()));
+    });
+
+    if (matchingPosts.length === 0) return;
+
+    const moisMap = {
+      'janvier':1,'février':2,'fevrier':2,'mars':3,'avril':4,'mai':5,
+      'juin':6,'juillet':7,'août':8,'aout':8,'septembre':9,
+      'octobre':10,'novembre':11,'décembre':12,'decembre':12
+    };
+    
+    const dateRegex = /(\d{1,2})[\/\s\-](\d{1,2})[\/\s\-](\d{4})|(\d{1,2})\s+(janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre)\s+(\d{4})/gi;
+
+    let finalPost = null;
+
+    // 2. Trouver le premier événement futur valide
+    for (const post of matchingPosts) {
+      const message = post.message || '';
+      const matches = [...message.matchAll(dateRegex)];
+
+      if (matches.length === 0) {
+        finalPost = post;
+        break; 
+      }
+
+      let aUneDateFuture = false;
+      let aAuMoinsUneDateValide = false;
+
+      for (const match of matches) {
+        let annee, mois, jour;
+
+        if (match[3]) {
+          jour  = parseInt(match[1], 10);
+          mois  = parseInt(match[2], 10);
+          annee = parseInt(match[3], 10);
+        } else if (match[6]) {
+          jour  = parseInt(match[4], 10);
+          mois  = moisMap[match[5].toLowerCase()];
+          annee = parseInt(match[6], 10);
+        }
+
+        if (jour && mois && annee) {
+          aAuMoinsUneDateValide = true;
+          const eventDate = new Date(annee, mois - 1, jour);
+          if (eventDate >= todayMidnight) {
+            aUneDateFuture = true;
+          }
+        }
+      }
+
+      if (!aAuMoinsUneDateValide || aUneDateFuture) {
+        finalPost = post;
+        break; 
+      }
     }
 
-    const texte = encodeURIComponent(
-      `Contact Église CEP Berée - Message du site Web\n\n` +
-      `Je m'appelle ${prenom} ${nom},\n` +
-      `${message}\n` +
-      `Pour le suivi, mon num est le ${tel}\n` +
-      (email ? `\nEmail : ${email}\n` : '')
-    );
+    if (!finalPost) return;
 
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texte}`, '_blank');
-  });
+    // 3. Injection HTML de la popup
+    const popup = document.createElement('div');
+    popup.id = 'event-popup';
+    popup.innerHTML = `
+      <div class="event-popup__overlay" id="event-popup-overlay"></div>
+      <div class="event-popup__box">
+        <button class="event-popup__close" id="event-popup-close">✕</button>
+        <a href="${finalPost.permalink_url}" target="_blank" rel="noopener">
+          <img src="${finalPost.full_picture}" alt="Événement CEP Berée">
+        </a>
+        <div class="event-popup__body">
+          <p class="event-popup__msg">${truncate(finalPost.message, 150)}</p>
+          <a href="${finalPost.permalink_url}" target="_blank" rel="noopener" class="event-popup__btn">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/>
+            </svg>
+            Voir sur Facebook
+          </a>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(popup);
+    setTimeout(() => popup.classList.add('event-popup--visible'), 2000);
+
+    function closePopup() {
+      popup.classList.remove('event-popup--visible');
+      setTimeout(() => popup.remove(), 400);
+      // Plus aucune trace de localStorage ici non plus
+    }
+
+    document.getElementById('event-popup-close').addEventListener('click', closePopup);
+    document.getElementById('event-popup-overlay').addEventListener('click', closePopup);
+
+  } catch (err) {
+    console.error('Popup événement error:', err);
+  }
 }
+// ---- DOMContentLoaded (Gestionnaire global des écouteurs) ----
+document.addEventListener('DOMContentLoaded', () => {
 
+  // ---- Formulaire contact WhatsApp ----------------------------
+  const WHATSAPP_NUMBER = '243815147352';
+  const contactSubmit = document.getElementById('c-submit');
+  
+  if (contactSubmit) {
+    contactSubmit.addEventListener('click', () => {
+      const prenom  = document.getElementById('c-prenom').value.trim();
+      const nom     = document.getElementById('c-nom').value.trim();
+      const email   = document.getElementById('c-email').value.trim();
+      const tel     = document.getElementById('c-tel').value.trim();
+      const message = document.getElementById('c-message').value.trim();
 
-  // ---- Bouton retour en haut ----------------------------------
-const btnTop = document.getElementById('btn-top');
-if (btnTop) {
-  window.addEventListener('scroll', () => {
-    btnTop.classList.toggle('visible', window.scrollY > 100);
-  });
+      if (!prenom || !tel || !message) {
+        alert('Veuillez remplir les champs obligatoires : prénom, téléphone et message.');
+        return;
+      }
 
-  btnTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
+      const texte = encodeURIComponent(
+        `Contact Église CEP Berée - Message du site Web\n\n` +
+        `Je m'appelle ${prenom} ${nom},\n` +
+        `${message}\n` +
+        `Pour le suivi, mon num est le ${tel}\n` +
+        (email ? `\nEmail : ${email}\n` : '')
+      );
 
-  // YouTube/Facebook — seulement sur index.html
-  if (document.getElementById('une-skeleton')) {
-    loadContent('youtube');
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texte}`, '_blank');
+    });
   }
 
-  // Menu hamburger — toutes les pages
+  // ---- Exécutions spécifiques à la page d'accueil (index.html) ----
+  if (document.getElementById('une-skeleton')) {
+    // 1. Charger le flux de cartes (YouTube par défaut)
+    loadContent('youtube');
+    // 2. Déclencher la popup événement Facebook
+    loadPopupEvenement();
+  }
+
+  // ---- Bouton retour en haut ----------------------------------
+  const btnTop = document.getElementById('btn-top');
+  if (btnTop) {
+    window.addEventListener('scroll', () => {
+      btnTop.classList.toggle('visible', window.scrollY > 100);
+    });
+
+    btnTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // ---- Menu hamburger -----------------------------------------
   const hamburger  = document.getElementById('nav-hamburger');
   const mobileMenu = document.getElementById('nav-mobile');
   const closeBtn   = document.getElementById('nav-mobile-close');
@@ -271,39 +399,40 @@ if (btnTop) {
     }
   }
 
-// ---- Dropdown À Propos menu mobile ----------------------
-const dropdownBtn  = document.getElementById('dropdown-about-btn');
-const dropdownList = document.getElementById('dropdown-about');
+  // ---- Dropdown À Propos menu mobile ----------------------
+  const dropdownBtn  = document.getElementById('dropdown-about-btn');
+  const dropdownList = document.getElementById('dropdown-about');
 
-if (dropdownBtn && dropdownList) {
-  dropdownBtn.addEventListener('click', () => {
-    dropdownBtn.classList.toggle('open');
-    dropdownList.classList.toggle('open');
-  });
-}
+  if (dropdownBtn && dropdownList) {
+    dropdownBtn.addEventListener('click', () => {
+      dropdownBtn.classList.toggle('open');
+      dropdownList.classList.toggle('open');
+    });
+  }
 
-// ---- Dropdown À Propos nav desktop ----------------------
-const navDropdownBtn  = document.getElementById('nav-dropdown-btn');
-const navDropdownList = document.getElementById('nav-dropdown-list');
+  // ---- Dropdown À Propos nav desktop ----------------------
+  const navDropdownBtn  = document.getElementById('nav-dropdown-btn');
+  const navDropdownList = document.getElementById('nav-dropdown-list');
 
-if (navDropdownBtn && navDropdownList) {
-  navDropdownBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    navDropdownList.classList.toggle('open');
-    navDropdownBtn.querySelector('svg').style.transform =
-      navDropdownList.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-  });
+  if (navDropdownBtn && navDropdownList) {
+    navDropdownBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navDropdownList.classList.toggle('open');
+      if (navDropdownBtn.querySelector('svg')) {
+        navDropdownBtn.querySelector('svg').style.transform =
+          navDropdownList.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    });
 
-  navDropdownList.addEventListener('click', (e) => {
-    e.stopPropagation();
-  });
+    navDropdownList.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
 
-  document.addEventListener('click', () => {
-    navDropdownList.classList.remove('open');
-    if (navDropdownBtn.querySelector('svg')) {
-      navDropdownBtn.querySelector('svg').style.transform = 'rotate(0deg)';
-    }
-  });
-}
-
+    document.addEventListener('click', () => {
+      navDropdownList.classList.remove('open');
+      if (navDropdownBtn.querySelector('svg')) {
+        navDropdownBtn.querySelector('svg').style.transform = 'rotate(0deg)';
+      }
+    });
+  }
 });
