@@ -199,8 +199,17 @@ async function loadContent(platform) {
    - Auto-scroll automatique toutes les 4 secondes si plusieurs événements
    - Ignore 100% des événements dont la date est dépassée
    - Gère les dates sur un jour et sur plusieurs jours
-   - Se base sur la date ÉCRITE DANS LE POST, pas sur created_time
+   - Filtre STRICT : le post doit obligatoirement avoir un mot-clé 
+     écrit par l'utilisateur (ignore les hashtags, la ponctuation,
+     et les textes automatiques de Facebook)
    ============================================================ */
+
+// Fonction de sécurité pour couper le texte (évite l'erreur "truncate is not defined")
+function safeTruncate(str, maxLen = 150) {
+  if (!str) return '';
+  if (str.length <= maxLen) return str;
+  return str.substring(0, maxLen) + '...';
+}
 
 const MOIS_MAP = {
   'janvier': 1, 'février': 2, 'fevrier': 2, 'mars': 3, 'avril': 4, 'mai': 5,
@@ -214,7 +223,7 @@ const MOIS_PATTERN = Object.keys(MOIS_MAP).join('|');
  */
 function resolveYear(mois, jour, anneeStr) {
   if (anneeStr) return parseInt(anneeStr, 10);
-  
+
   const now = new Date();
   let annee = now.getFullYear();
   const currentMonth = now.getMonth() + 1;
@@ -313,15 +322,48 @@ function getEventStatus(message) {
   return { isUpcoming: true, earliestStart };
 }
 
+/**
+ * Normalise le texte pour la détection de mots-clés :
+ * - Supprime les hashtags entiers (#mot)
+ * - Retire toute ponctuation/caractères spéciaux (garde lettres, chiffres, espaces)
+ * - Passe en minuscules
+ */
+function normalizeForKeywordSearch(text) {
+  if (!text) return '';
+  return text
+    .replace(/#\S+/g, ' ')                // supprime les hashtags entiers
+    .replace(/[^a-zà-ÿ0-9\s]/gi, ' ')     // supprime ponctuation/symboles, garde lettres accentuées + chiffres
+    .replace(/\s+/g, ' ')                 // normalise les espaces multiples
+    .trim()
+    .toLowerCase();
+}
+
+/**
+ * Vérifie si un mot-clé apparaît comme mot/expression entière
+ * dans le texte normalisé (pas comme simple sous-chaîne).
+ */
+function containsKeyword(normalizedText, keyword) {
+  const normalizedKeyword = normalizeForKeywordSearch(keyword);
+  const mapAccents = {
+    'a': '[aàâä]', 'e': '[eéèêë]', 'i': '[iîï]', 'o': '[oôö]', 'u': '[uùûü]', 'c': '[cç]'
+  };
+  let regexStr = normalizedKeyword;
+  Object.keys(mapAccents).forEach(char => {
+    regexStr = regexStr.replace(new RegExp(char, 'g'), mapAccents[char]);
+  });
+  const pattern = new RegExp(`(^|\\s)${regexStr}(\\s|$)`, 'i');
+  return pattern.test(normalizedText);
+}
+
 async function loadPopupEvenement() {
   const { pageId, accessToken } = CONFIG.facebook;
 
   const KEYWORDS = [
     'événement', 'evenement', 'mardi enseignement', 'jeudi enseignement', 'culte dominical',
     'conférence', 'rencontre des jeunes', 'retraite', 'concert', 'séminaire', 'seminaire',
-    'service spécial', 'prière', 'priere', 'convention', 'semaine de grâce', 'semaine de grace', 'semaine',
+    'service spécial', 'prière', 'priere', 'convention', 'semaine de grâce', 'semaine de grace',
     'réveil', 'reveil', 'jeûne', 'jeune', 'intercession', 'nuit de prière', 'nuit de priere',
-    'évangélisation', 'evangelisation', 'rencontre des femmes', 'deliez-le', 'deliezle', 'sainte cène', 'saint cene'
+    'évangélisation', 'evangelisation', 'rencontre des femmes', 'deliez le', 'sainte cène', 'saint cene'
   ];
 
   try {
@@ -334,10 +376,16 @@ async function loadPopupEvenement() {
     const now = new Date();
 
     const candidatePosts = (data.data || []).filter(item => {
-      const text = ((item.message || '') + (item.story || '')).toLowerCase();
+      // On ne récupère que le texte tapé par l'utilisateur (item.message),
+      // normalisé pour ignorer hashtags et ponctuation.
+      const normalizedText = normalizeForKeywordSearch(item.message || '');
+
       const postDate = new Date(item.created_time);
       const joursEcoules = (now - postDate) / (1000 * 60 * 60 * 24);
-      return item.full_picture && joursEcoules <= 60 && KEYWORDS.some(kw => text.includes(kw.toLowerCase()));
+
+      return item.full_picture &&
+             joursEcoules <= 60 &&
+             KEYWORDS.some(kw => containsKeyword(normalizedText, kw));
     });
 
     const events = candidatePosts
@@ -372,7 +420,8 @@ function renderEventPopup(events) {
         <img src="${post.full_picture}" alt="Événement CEP Berée">
       </a>
       <div class="event-popup__body">
-        <p class="event-popup__msg">${truncate(post.message, 150)}</p>
+        <!-- CORRECTION : Utilise safeTruncate pour éviter le crash JS -->
+        <p class="event-popup__msg">${safeTruncate(post.message, 150)}</p>
         <a href="${post.permalink_url}" target="_blank" rel="noopener" class="event-popup__btn">
           <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
             <path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/>
@@ -409,9 +458,6 @@ function renderEventPopup(events) {
   `;
 
   document.body.appendChild(popup);
-  
-  // CHANGEMENT : S'affiche immédiatement au chargement de la page
-  // (Le délai de 50ms permet seulement au navigateur d'enregistrer l'état initial pour l'animation CSS d'ouverture)
   setTimeout(() => popup.classList.add('event-popup--visible'), 50);
 
   let current = 0;
@@ -426,41 +472,36 @@ function renderEventPopup(events) {
     dots.forEach(d => d.classList.toggle('event-popup__dot--active', parseInt(d.dataset.index, 10) === current));
   }
 
-  // Fonction pour démarrer/réinitialiser le défilement automatique
   function startAutoScroll() {
     if (total > 1) {
       clearInterval(autoScrollTimer);
       autoScrollTimer = setInterval(() => {
         goTo(current + 1);
-      }, 4000); // 4000 ms = défilement toutes les 4 secondes
+      }, 4000);
     }
   }
 
   if (total > 1) {
     startAutoScroll();
 
-    // Flèche Précédent
     popup.querySelector('#event-popup-prev').addEventListener('click', () => {
       goTo(current - 1);
-      startAutoScroll(); // Réinitialise le compteur après interaction
+      startAutoScroll();
     });
 
-    // Flèche Suivant
     popup.querySelector('#event-popup-next').addEventListener('click', () => {
       goTo(current + 1);
       startAutoScroll();
     });
 
-    // Clic sur les points indicateurs (dots)
     dots.forEach(dot => dot.addEventListener('click', () => {
       goTo(parseInt(dot.dataset.index, 10));
       startAutoScroll();
     }));
 
-    // Swipe tactile sur mobile
     let touchStartX = 0;
-    track.addEventListener('touchstart', e => { 
-      touchStartX = e.touches[0].clientX; 
+    track.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
     }, { passive: true });
 
     track.addEventListener('touchend', e => {
@@ -476,7 +517,7 @@ function renderEventPopup(events) {
   }
 
   function closePopup() {
-    clearInterval(autoScrollTimer); // Nettoyage de l'intervalle lors de la fermeture
+    clearInterval(autoScrollTimer);
     popup.classList.remove('event-popup--visible');
     setTimeout(() => popup.remove(), 400);
   }
