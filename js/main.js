@@ -192,132 +192,299 @@ async function loadContent(platform) {
 }
 
 
-// ---- Popup événements Facebook (Détecteur intelligent) ----
+/* ============================================================
+   POPUP ÉVÉNEMENT — CEP Berée
+   - Affiche TOUS les événements à venir (plus un seul)
+   - S'affiche INSTANTANÉMENT au chargement de la page
+   - Auto-scroll automatique toutes les 4 secondes si plusieurs événements
+   - Ignore 100% des événements dont la date est dépassée
+   - Gère les dates sur un jour et sur plusieurs jours
+   - Se base sur la date ÉCRITE DANS LE POST, pas sur created_time
+   ============================================================ */
+
+const MOIS_MAP = {
+  'janvier': 1, 'février': 2, 'fevrier': 2, 'mars': 3, 'avril': 4, 'mai': 5,
+  'juin': 6, 'juillet': 7, 'août': 8, 'aout': 8, 'septembre': 9,
+  'octobre': 10, 'novembre': 11, 'décembre': 12, 'decembre': 12
+};
+const MOIS_PATTERN = Object.keys(MOIS_MAP).join('|');
+
+/**
+ * Déduit l'année de manière sécurisée si elle n'est pas écrite dans le post.
+ */
+function resolveYear(mois, jour, anneeStr) {
+  if (anneeStr) return parseInt(anneeStr, 10);
+  
+  const now = new Date();
+  let annee = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+
+  if (currentMonth >= 11 && mois <= 2) {
+    annee += 1;
+  } else if (currentMonth <= 2 && mois >= 11) {
+    annee -= 1;
+  }
+
+  return annee;
+}
+
+/**
+ * Extrait toutes les plages de dates (début/fin) trouvées dans le texte d'un post.
+ */
+function extractDateRanges(message) {
+  if (!message) return [];
+  const ranges = [];
+  const consumed = [];
+
+  // 1. Plages explicites : "du 12 au 17 août"
+  const rangeRegex = new RegExp(
+    `du\\s+(\\d{1,2})(?:er)?(?:\\s+(${MOIS_PATTERN}))?\\s+au\\s+(\\d{1,2})(?:er)?\\s+(${MOIS_PATTERN})(?:\\s+(\\d{4}))?`,
+    'gi'
+  );
+
+  let match;
+  while ((match = rangeRegex.exec(message)) !== null) {
+    const jourDebut = parseInt(match[1], 10);
+    const moisFinNom = match[4].toLowerCase();
+    const moisDebutNom = (match[2] || match[4]).toLowerCase();
+    const jourFin = parseInt(match[3], 10);
+    const moisDebut = MOIS_MAP[moisDebutNom];
+    const moisFin = MOIS_MAP[moisFinNom];
+
+    if (jourDebut && moisDebut && jourFin && moisFin) {
+      const annee = resolveYear(moisFin, jourFin, match[5]);
+      let anneeDebut = annee;
+      if (moisDebut > moisFin) anneeDebut = annee - 1;
+
+      ranges.push({
+        start: new Date(anneeDebut, moisDebut - 1, jourDebut),
+        end: new Date(annee, moisFin - 1, jourFin, 23, 59, 59)
+      });
+    }
+    consumed.push([match.index, match.index + match[0].length]);
+  }
+
+  // 2. Dates isolées
+  const singleRegex = new RegExp(
+    `(\\d{1,2})[\\/\\s\\-](\\d{1,2})[\\/\\s\\-](\\d{4})|(\\d{1,2})(?:er)?\\s+(${MOIS_PATTERN})(?:\\s+(\\d{4}))?`,
+    'gi'
+  );
+
+  while ((match = singleRegex.exec(message)) !== null) {
+    const dejaUtilise = consumed.some(([s, e]) => match.index >= s && match.index < e);
+    if (dejaUtilise) continue;
+
+    let jour, mois, annee;
+    if (match[3]) {
+      jour = parseInt(match[1], 10);
+      mois = parseInt(match[2], 10);
+      annee = parseInt(match[3], 10);
+    } else if (match[5]) {
+      jour = parseInt(match[4], 10);
+      mois = MOIS_MAP[match[5].toLowerCase()];
+      annee = resolveYear(mois, jour, match[6]);
+    }
+
+    if (jour && mois && annee) {
+      ranges.push({
+        start: new Date(annee, mois - 1, jour),
+        end: new Date(annee, mois - 1, jour, 23, 59, 59)
+      });
+    }
+  }
+
+  return ranges;
+}
+
+function getEventStatus(message) {
+  const ranges = extractDateRanges(message);
+  const now = new Date();
+
+  if (ranges.length === 0) {
+    return { isUpcoming: false, earliestStart: null };
+  }
+
+  const upcoming = ranges.filter(r => r.end >= now);
+  if (upcoming.length === 0) {
+    return { isUpcoming: false, earliestStart: null };
+  }
+
+  const earliestStart = new Date(Math.min(...upcoming.map(r => r.start.getTime())));
+  return { isUpcoming: true, earliestStart };
+}
+
 async function loadPopupEvenement() {
   const { pageId, accessToken } = CONFIG.facebook;
-
-  // On a retiré le bloc "localStorage" pour que ça s'affiche TOUT LE TEMPS
 
   const KEYWORDS = [
     'événement', 'evenement', 'mardi enseignement', 'jeudi enseignement', 'culte dominical',
     'conférence', 'rencontre des jeunes', 'retraite', 'concert', 'séminaire', 'seminaire',
-    'service spécial', 'prière', 'priere', 'convention', 'semaine de grâce', 'semaine de grace', 'semaine', 
-    'réveil', 'reveil', 'jeûne', 'jeune', 'intercession', 'nuit de prière', 'nuit de priere', 
+    'service spécial', 'prière', 'priere', 'convention', 'semaine de grâce', 'semaine de grace', 'semaine',
+    'réveil', 'reveil', 'jeûne', 'jeune', 'intercession', 'nuit de prière', 'nuit de priere',
     'évangélisation', 'evangelisation', 'rencontre des femmes', 'deliez-le', 'deliezle', 'sainte cène', 'saint cene'
   ];
 
   try {
     const fields = 'id,message,story,full_picture,created_time,permalink_url';
-    const url    = `https://graph.facebook.com/v19.0/${pageId}/posts?fields=${fields}&limit=50&access_token=${accessToken}`;
-    const res    = await fetch(url);
+    const url = `https://graph.facebook.com/v19.0/${pageId}/posts?fields=${fields}&limit=50&access_token=${accessToken}`;
+    const res = await fetch(url);
     if (!res.ok) throw new Error(`Erreur HTTP Facebook Popup: ${res.status}`);
-    const data   = await res.json();
+    const data = await res.json();
 
     const now = new Date();
-    const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    // 1. Filtrer les publications récentes
-    const matchingPosts = (data.data || []).filter(item => {
+    const candidatePosts = (data.data || []).filter(item => {
       const text = ((item.message || '') + (item.story || '')).toLowerCase();
       const postDate = new Date(item.created_time);
       const joursEcoules = (now - postDate) / (1000 * 60 * 60 * 24);
-
-      return item.full_picture && joursEcoules <= 30 && KEYWORDS.some(kw => text.includes(kw.toLowerCase()));
+      return item.full_picture && joursEcoules <= 60 && KEYWORDS.some(kw => text.includes(kw.toLowerCase()));
     });
 
-    if (matchingPosts.length === 0) return;
-
-    const moisMap = {
-      'janvier':1,'février':2,'fevrier':2,'mars':3,'avril':4,'mai':5,
-      'juin':6,'juillet':7,'août':8,'aout':8,'septembre':9,
-      'octobre':10,'novembre':11,'décembre':12,'decembre':12
-    };
-    
-    const dateRegex = /(\d{1,2})[\/\s\-](\d{1,2})[\/\s\-](\d{4})|(\d{1,2})\s+(janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre)\s+(\d{4})/gi;
-
-    let finalPost = null;
-
-    // 2. Trouver le premier événement futur valide
-    for (const post of matchingPosts) {
-      const message = post.message || '';
-      const matches = [...message.matchAll(dateRegex)];
-
-      if (matches.length === 0) {
-        finalPost = post;
-        break; 
-      }
-
-      let aUneDateFuture = false;
-      let aAuMoinsUneDateValide = false;
-
-      for (const match of matches) {
-        let annee, mois, jour;
-
-        if (match[3]) {
-          jour  = parseInt(match[1], 10);
-          mois  = parseInt(match[2], 10);
-          annee = parseInt(match[3], 10);
-        } else if (match[6]) {
-          jour  = parseInt(match[4], 10);
-          mois  = moisMap[match[5].toLowerCase()];
-          annee = parseInt(match[6], 10);
+    const events = candidatePosts
+      .map(post => ({ post, status: getEventStatus(post.message || '') }))
+      .filter(({ status }) => status.isUpcoming)
+      .sort((a, b) => {
+        if (a.status.earliestStart && b.status.earliestStart) {
+          return a.status.earliestStart - b.status.earliestStart;
         }
+        if (a.status.earliestStart) return -1;
+        if (b.status.earliestStart) return 1;
+        return new Date(b.post.created_time) - new Date(a.post.created_time);
+      })
+      .map(({ post }) => post);
 
-        if (jour && mois && annee) {
-          aAuMoinsUneDateValide = true;
-          const eventDate = new Date(annee, mois - 1, jour);
-          if (eventDate >= todayMidnight) {
-            aUneDateFuture = true;
-          }
-        }
-      }
+    if (events.length === 0) return;
 
-      if (!aAuMoinsUneDateValide || aUneDateFuture) {
-        finalPost = post;
-        break; 
-      }
-    }
-
-    if (!finalPost) return;
-
-    // 3. Injection HTML de la popup
-    const popup = document.createElement('div');
-    popup.id = 'event-popup';
-    popup.innerHTML = `
-      <div class="event-popup__overlay" id="event-popup-overlay"></div>
-      <div class="event-popup__box">
-        <button class="event-popup__close" id="event-popup-close">✕</button>
-        <a href="${finalPost.permalink_url}" target="_blank" rel="noopener">
-          <img src="${finalPost.full_picture}" alt="Événement CEP Berée">
-        </a>
-        <div class="event-popup__body">
-          <p class="event-popup__msg">${truncate(finalPost.message, 150)}</p>
-          <a href="${finalPost.permalink_url}" target="_blank" rel="noopener" class="event-popup__btn">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-              <path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/>
-            </svg>
-            Voir sur Facebook
-          </a>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(popup);
-    setTimeout(() => popup.classList.add('event-popup--visible'), 2000);
-
-    function closePopup() {
-      popup.classList.remove('event-popup--visible');
-      setTimeout(() => popup.remove(), 400);
-      // Plus aucune trace de localStorage ici non plus
-    }
-
-    document.getElementById('event-popup-close').addEventListener('click', closePopup);
-    document.getElementById('event-popup-overlay').addEventListener('click', closePopup);
+    renderEventPopup(events);
 
   } catch (err) {
     console.error('Popup événement error:', err);
   }
 }
+
+function renderEventPopup(events) {
+  const popup = document.createElement('div');
+  popup.id = 'event-popup';
+
+  const slidesHTML = events.map(post => `
+    <div class="event-popup__slide">
+      <a href="${post.permalink_url}" target="_blank" rel="noopener">
+        <img src="${post.full_picture}" alt="Événement CEP Berée">
+      </a>
+      <div class="event-popup__body">
+        <p class="event-popup__msg">${truncate(post.message, 150)}</p>
+        <a href="${post.permalink_url}" target="_blank" rel="noopener" class="event-popup__btn">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/>
+          </svg>
+          Voir sur Facebook
+        </a>
+      </div>
+    </div>
+  `).join('');
+
+  const dotsHTML = events.length > 1
+    ? `<div class="event-popup__dots">${events.map((_, i) =>
+        `<button class="event-popup__dot${i === 0 ? ' event-popup__dot--active' : ''}" data-index="${i}" aria-label="Événement ${i + 1}"></button>`
+      ).join('')}</div>`
+    : '';
+
+  const arrowsHTML = events.length > 1
+    ? `<button class="event-popup__arrow event-popup__arrow--prev" id="event-popup-prev" aria-label="Précédent">‹</button>
+       <button class="event-popup__arrow event-popup__arrow--next" id="event-popup-next" aria-label="Suivant">›</button>`
+    : '';
+
+  popup.innerHTML = `
+    <div class="event-popup__overlay" id="event-popup-overlay"></div>
+    <div class="event-popup__box">
+      <button class="event-popup__close" id="event-popup-close">✕</button>
+      <div class="event-popup__slider" id="event-popup-slider">
+        <div class="event-popup__track" id="event-popup-track">
+          ${slidesHTML}
+        </div>
+        ${arrowsHTML}
+      </div>
+      ${dotsHTML}
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+  
+  // CHANGEMENT : S'affiche immédiatement au chargement de la page
+  // (Le délai de 50ms permet seulement au navigateur d'enregistrer l'état initial pour l'animation CSS d'ouverture)
+  setTimeout(() => popup.classList.add('event-popup--visible'), 50);
+
+  let current = 0;
+  const track = popup.querySelector('#event-popup-track');
+  const dots = popup.querySelectorAll('.event-popup__dot');
+  const total = events.length;
+  let autoScrollTimer = null;
+
+  function goTo(index) {
+    current = (index + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach(d => d.classList.toggle('event-popup__dot--active', parseInt(d.dataset.index, 10) === current));
+  }
+
+  // Fonction pour démarrer/réinitialiser le défilement automatique
+  function startAutoScroll() {
+    if (total > 1) {
+      clearInterval(autoScrollTimer);
+      autoScrollTimer = setInterval(() => {
+        goTo(current + 1);
+      }, 4000); // 4000 ms = défilement toutes les 4 secondes
+    }
+  }
+
+  if (total > 1) {
+    startAutoScroll();
+
+    // Flèche Précédent
+    popup.querySelector('#event-popup-prev').addEventListener('click', () => {
+      goTo(current - 1);
+      startAutoScroll(); // Réinitialise le compteur après interaction
+    });
+
+    // Flèche Suivant
+    popup.querySelector('#event-popup-next').addEventListener('click', () => {
+      goTo(current + 1);
+      startAutoScroll();
+    });
+
+    // Clic sur les points indicateurs (dots)
+    dots.forEach(dot => dot.addEventListener('click', () => {
+      goTo(parseInt(dot.dataset.index, 10));
+      startAutoScroll();
+    }));
+
+    // Swipe tactile sur mobile
+    let touchStartX = 0;
+    track.addEventListener('touchstart', e => { 
+      touchStartX = e.touches[0].clientX; 
+    }, { passive: true });
+
+    track.addEventListener('touchend', e => {
+      const diff = e.changedTouches[0].clientX - touchStartX;
+      if (diff > 50) {
+        goTo(current - 1);
+        startAutoScroll();
+      } else if (diff < -50) {
+        goTo(current + 1);
+        startAutoScroll();
+      }
+    }, { passive: true });
+  }
+
+  function closePopup() {
+    clearInterval(autoScrollTimer); // Nettoyage de l'intervalle lors de la fermeture
+    popup.classList.remove('event-popup--visible');
+    setTimeout(() => popup.remove(), 400);
+  }
+
+  popup.querySelector('#event-popup-close').addEventListener('click', closePopup);
+  popup.querySelector('#event-popup-overlay').addEventListener('click', closePopup);
+}
+
 // ---- DOMContentLoaded (Gestionnaire global des écouteurs) ----
 document.addEventListener('DOMContentLoaded', () => {
 
