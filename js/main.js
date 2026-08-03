@@ -323,47 +323,82 @@ function getEventStatus(message) {
 }
 
 /**
- * Normalise le texte pour la détection de mots-clés :
- * - Supprime les hashtags entiers (#mot)
- * - Retire toute ponctuation/caractères spéciaux (garde lettres, chiffres, espaces)
- * - Passe en minuscules
+ * Retire les accents et met en minuscules pour comparer.
  */
-function normalizeForKeywordSearch(text) {
-  if (!text) return '';
-  return text
-    .replace(/#\S+/g, ' ')                // supprime les hashtags entiers
-    .replace(/[^a-zà-ÿ0-9\s]/gi, ' ')     // supprime ponctuation/symboles, garde lettres accentuées + chiffres
-    .replace(/\s+/g, ' ')                 // normalise les espaces multiples
-    .trim()
-    .toLowerCase();
+function foldText(str) {
+  return str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 }
 
 /**
- * Vérifie si un mot-clé apparaît comme mot/expression entière
- * dans le texte normalisé (pas comme simple sous-chaîne).
+ * Un voisin est "autorisé" s'il s'agit d'un espace, d'une ponctuation
+ * de phrase normale, ou du début/fin du texte.
  */
-function containsKeyword(normalizedText, keyword) {
-  const normalizedKeyword = normalizeForKeywordSearch(keyword);
-  const mapAccents = {
-    'a': '[aàâä]', 'e': '[eéèêë]', 'i': '[iîï]', 'o': '[oôö]', 'u': '[uùûü]', 'c': '[cç]'
-  };
-  let regexStr = normalizedKeyword;
-  Object.keys(mapAccents).forEach(char => {
-    regexStr = regexStr.replace(new RegExp(char, 'g'), mapAccents[char]);
+function isAllowedNeighbor(ch) {
+  if (ch === undefined) return true;
+  return /[\s.,'"!?:;()\-\u2019\u2018\u201c\u201d\u00AB\u00BB\n\r]/.test(ch);
+}
+
+/**
+ * Analyse un texte pour un mot-clé donné : cherche TOUTES ses occurrences
+ * et détermine s'il en existe au moins une "propre" (voisins autorisés)
+ * et/ou au moins une "sale" (collée à un # ou caractère spécial).
+ */
+function analyzeKeyword(rawText, keyword) {
+  const text = foldText(rawText);
+  const kw = foldText(keyword);
+  let fromIndex = 0;
+  let hasClean = false;
+  let hasDirty = false;
+
+  while (true) {
+    const idx = text.indexOf(kw, fromIndex);
+    if (idx === -1) break;
+
+    const before = text[idx - 1];
+    const after  = text[idx + kw.length];
+
+    if (isAllowedNeighbor(before) && isAllowedNeighbor(after)) {
+      hasClean = true;
+    } else {
+      hasDirty = true;
+    }
+
+    fromIndex = idx + 1;
+  }
+
+  return { hasClean, hasDirty };
+}
+
+/**
+ * Analyse le post entier sur la liste de mots-clés.
+ * - dirty: au moins un mot-clé est collé à un caractère spécial quelque part
+ * - clean: au moins un mot-clé apparaît proprement
+ */
+function analyzePost(rawText, keywords) {
+  let hasClean = false;
+  let hasDirty = false;
+
+  keywords.forEach(kw => {
+    const result = analyzeKeyword(rawText, kw);
+    if (result.hasClean) hasClean = true;
+    if (result.hasDirty) hasDirty = true;
   });
-  const pattern = new RegExp(`(^|\\s)${regexStr}(\\s|$)`, 'i');
-  return pattern.test(normalizedText);
+
+  return { hasClean, hasDirty };
 }
 
 async function loadPopupEvenement() {
   const { pageId, accessToken } = CONFIG.facebook;
 
   const KEYWORDS = [
-    'événement', 'evenement', 'mardi enseignement', 'jeudi enseignement', 'culte dominical',
-    'conférence', 'rencontre des jeunes', 'retraite', 'concert', 'séminaire', 'seminaire',
-    'service spécial', 'prière', 'priere', 'convention', 'semaine de grâce', 'semaine de grace',
-    'réveil', 'reveil', 'jeûne', 'jeune', 'intercession', 'nuit de prière', 'nuit de priere',
-    'évangélisation', 'evangelisation', 'rencontre des femmes', 'deliez le', 'sainte cène', 'saint cene'
+    'mardi enseignement', 'jeudi enseignement', 'culte dominical',
+    'rencontre des jeunes', 'retraite',  'séminaire', 'seminaire',
+    'service spécial', 'prière', 'priere', 'convention',
+    'nuit de prière', 'nuit de priere','évangélisation', 'evangelisation',
+     'rencontre des femmes', 'déliez-le', 'deliez-le', 'sainte cène', 'saint cene'
   ];
 
   try {
@@ -376,17 +411,20 @@ async function loadPopupEvenement() {
     const now = new Date();
 
     const candidatePosts = (data.data || []).filter(item => {
-      // On ne récupère que le texte tapé par l'utilisateur (item.message),
-      // normalisé pour ignorer hashtags et ponctuation.
-      const normalizedText = normalizeForKeywordSearch(item.message || '');
+  const rawMessage = item.message || '';
 
-      const postDate = new Date(item.created_time);
-      const joursEcoules = (now - postDate) / (1000 * 60 * 60 * 24);
+  const { hasClean, hasDirty } = analyzePost(rawMessage, KEYWORDS);
 
-      return item.full_picture &&
-             joursEcoules <= 60 &&
-             KEYWORDS.some(kw => containsKeyword(normalizedText, kw));
-    });
+  // Si un mot-clé est collé à un caractère spécial n'importe où -> rejet total
+  if (hasDirty) return false;
+
+  const postDate = new Date(item.created_time);
+  const joursEcoules = (now - postDate) / (1000 * 60 * 60 * 24);
+
+  return item.full_picture &&
+         joursEcoules <= 60 &&
+         hasClean;
+});
 
     const events = candidatePosts
       .map(post => ({ post, status: getEventStatus(post.message || '') }))
