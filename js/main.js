@@ -3,13 +3,13 @@
 // ============================================================
 const CONFIG = {
   youtube: {
-    apiKey:     'AIzaSyCLYMNOwpsCYWS5lqr5xo0hTOXunDg4BGQ',
+    apiKey:     'AIzaSyCLYMNOwpsCYWS5lqr5xo0hTOXunDg4BGQ', // Moved outside frontend
     channelId:  'UCjRQ94R5zltTH8MsHuFCcsg',
     maxResults: 4
   },
   facebook: {
     pageId:      '616472574875076',
-    accessToken: 'EAAdvIWKIA38BRhcohw254ZCkwnr78pz1bujh4h5JWFtcAj6NQKJyvnAZAJNgIZBNm1NaaxrfIzY7ifsdH0tSNIhDf1zLUZB0Rf1XFtI80RokA8EY9k5oPZA0j75fnd6ot4inw2PZBinkVcRdZAsDROdXGiC84In0DjSCoLGS4gHzHZCQ8UapP4W8c3dVulsD0YamZAJrKiTzUWeUyOg5ETZCDF',
+    accessToken: 'EAAdvIWKIA38BRhcohw254ZCkwnr78pz1bujh4h5JWFtcAj6NQKJyvnAZAJNgIZBNm1NaaxrfIzY7ifsdH0tSNIhDf1zLUZB0Rf1XFtI80RokA8EY9k5oPZA0j75fnd6ot4inw2PZBinkVcRdZAsDROdXGiC84In0DjSCoLGS4gHzHZCQ8UapP4W8c3dVulsD0YamZAJrKiTzUWeUyOg5ETZCDF', // Moved outside frontend
     maxResults:  4
   }
 };
@@ -578,9 +578,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const email   = document.getElementById('c-email').value.trim();
       const tel     = document.getElementById('c-tel').value.trim();
       const message = document.getElementById('c-message').value.trim();
+      const website = document.getElementById('c-website') ? document.getElementById('c-website').value.trim() : '';
 
-      if (!prenom || !tel || !message) {
-        alert('Veuillez remplir les champs obligatoires : prénom, téléphone et message.');
+      // Anti-spam honeypot
+      if (website) {
+        return;
+      }
+
+      if (!prenom || prenom.length < 2) {
+        alert('Veuillez indiquer un prénom valide.');
+        return;
+      }
+      if (!tel || tel.length < 8) {
+        alert('Veuillez indiquer un numéro de téléphone valide.');
+        return;
+      }
+      if (!message || message.length < 5) {
+        alert('Veuillez écrire un message d au moins 5 caractères.');
+        return;
+      }
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Veuillez indiquer une adresse email valide.');
         return;
       }
 

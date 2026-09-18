@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centre Évangélique Pentecôtiste Berée</title>
+  <title>CEP Berée - Centre Évangélique Pentecôtiste à Kinshasa</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CEP Berée — Centre Évangélique Pentecôtiste à Kinshasa">
+  <meta property="og:description" content="Bienvenue au Centre Évangélique Pentecôtiste Berée. Une communauté chrétienne à Kinshasa fondée sur les Écritures. Cultes, prière, baptême et vie d'église.">
+  <meta property="og:image" content="https://cepberee.org/asset/og-image.jpg">
+  <meta property="og:url" content="https://cepberee.org/">
+  <meta property="og:site_name" content="CEP Berée">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CEP Berée — Centre Évangélique Pentecôtiste à Kinshasa">
+  <meta name="twitter:description" content="Bienvenue au Centre Évangélique Pentecôtiste Berée. Une communauté chrétienne à Kinshasa fondée sur les Écritures. Cultes, prière, baptême et vie d'église.">
+  <meta name="twitter:image" content="https://cepberee.org/asset/og-image.jpg">
+
+  <link rel="icon" href="asset/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -40,15 +52,6 @@
 <div class="nav-lang-slot"></div>
 <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
   <span></span><span></span><span></span>
-</button>
-
-</nav>
-
-
-<button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
-  <span></span>
-  <span></span>
-  <span></span>
 </button>
 
 </nav>
@@ -457,6 +460,10 @@
   <div class="form-group">
     <label>Message</label>
     <textarea id="c-message" placeholder="Votre message ici..."></textarea>
+  </div>
+  <div class="form-group" style="position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden;" aria-hidden="true">
+    <label for="c-website">Website</label>
+    <input type="text" id="c-website" name="website" tabindex="-1" autocomplete="off">
   </div>
   <button class="btn-primary btn-submit" id="c-submit">Envoyer le message</button>
 </div>

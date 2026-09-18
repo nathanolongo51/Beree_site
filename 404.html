@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page non trouvée — CEP Berée</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Page non trouvée — CEP Berée">
+  <meta property="og:description" content="La page demandée n'existe pas. Retournez à l'accueil du CEP Berée.">
+  <meta property="og:image" content="https://cepberee.org/asset/og-image.jpg">
+  <meta property="og:url" content="https://cepberee.org/404.html">
+  <meta property="og:site_name" content="CEP Berée">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Page non trouvée — CEP Berée">
+  <meta name="twitter:description" content="La page demandée n'existe pas. Retournez à l'accueil du CEP Berée.">
+  <meta name="twitter:image" content="https://cepberee.org/asset/og-image.jpg">
+
+  <link rel="icon" href="asset/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .error-page {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    .error-page h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .error-page p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      max-width: 400px;
+      text-align: center;
+    }
+    .error-page .btn-primary {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-logo">
+      <a href="index.html">
+        <img src="asset/Sans titre.png" alt="CEP Berée" class="nav-logo-img">
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="requetes.html" class="nav-cta">Requête de prière</a></li>
+    </ul>
+  </nav>
+
+  <div class="error-page">
+    <h1>404</h1>
+    <p>La page que vous recherchez n'existe pas ou a été déplacée.</p>
+    <a href="index.html" class="btn-primary">Retour à l'accueil</a>
+  </div>
+
+  <footer style="text-align:center; padding:2rem; color:var(--text-muted); font-size:0.9rem;">
+    Centre Évangélique Pentecôtiste Berée
+  </footer>
+</body>
+</html>

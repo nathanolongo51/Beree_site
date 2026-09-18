@@ -70,15 +70,14 @@
 .page-card {
   background: var(--white); border: 1px solid var(--border);
   border-radius: 10px; padding: 2rem;
-  transition: all 0.3s; position: relative; overflow: hidden;
+   position: relative; overflow: hidden;
 }
 
 .page-card::after {
   content: ''; position: absolute; bottom: 0; left: 0;
-  width: 0; height: 3px; background: var(--gold); transition: width 0.4s;
+  width: 0; height: 3px; background: var(--gold); 
 }
 
-.page-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,129,241,0.1); }
 .page-card:hover::after { width: 100%; }
 
 .page-card__icon {
@@ -195,7 +194,7 @@
   border-radius: 4px; padding: 0.85rem 1rem;
   color: var(--text); font-family: 'Jost', sans-serif;
   font-size: 0.9rem; font-weight: 300; outline: none;
-  transition: border-color 0.3s; width: 100%; appearance: none;
+   width: 100%; appearance: none;
 }
 
 .page-form__group input:focus,

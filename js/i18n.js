@@ -13,13 +13,13 @@ const CEP_I18N_ARIA = {"Menu": {"en": "Menu", "pt": "Menu", "ln": "Meni", "sw": 
   'use strict';
 
   var LANGS = [
-    { code: 'fr', label: 'Français', flag: '🇫🇷' },
-    { code: 'en', label: 'English', flag: '🇬🇧' },
-    { code: 'pt', label: 'Português', flag: '🇵🇹' },
-    { code: 'ln', label: 'Lingála', flag: '🇨🇩' },
-    { code: 'sw', label: 'Kiswahili', flag: '🇨🇩' },
-    { code: 'lu', label: 'Tshiluba', flag: '🇨🇩' },
-    { code: 'kg', label: 'Kikongo', flag: '🇨🇩' }
+    { code: 'fr', label: 'Français', flag: '' },
+    { code: 'en', label: 'English', flag: '' },
+    { code: 'pt', label: 'Português', flag: '' },
+    { code: 'ln', label: 'Lingála', flag: '' },
+    { code: 'sw', label: 'Kiswahili', flag: '' },
+    { code: 'lu', label: 'Tshiluba', flag: '' },
+    { code: 'kg', label: 'Kikongo', flag: '' }
   ];
   var STORAGE_KEY = 'cep-beree-lang';
   var textNodes = [];   // {node, original}
@@ -124,7 +124,7 @@ const CEP_I18N_ARIA = {"Menu": {"en": "Menu", "pt": "Menu", "ln": "Meni", "sw": 
 
     function labelFor(code) {
       var l = LANGS.filter(function (x) { return x.code === code; })[0];
-      return l ? (l.flag + ' ' + l.code.toUpperCase()) : code;
+      return l ? l.code.toUpperCase() : code;
     }
 
     function refreshBtn(code) {
@@ -137,7 +137,7 @@ const CEP_I18N_ARIA = {"Menu": {"en": "Menu", "pt": "Menu", "ln": "Meni", "sw": 
       a.type = 'button';
       a.className = 'lang-switcher__item';
       a.setAttribute('data-lang', l.code);
-      a.innerHTML = l.flag + ' ' + l.label;
+      a.innerHTML = l.label;
       a.addEventListener('click', function () {
         var lang = l.code;
         setStoredLang(lang);

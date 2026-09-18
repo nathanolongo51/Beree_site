@@ -82,22 +82,21 @@
 .bt-card {
   background: var(--white); border: 1px solid var(--border);
   border-radius: 12px; padding: 2.5rem 2rem; text-align: center;
-  transition: all 0.3s; position: relative; overflow: hidden;
+   position: relative; overflow: hidden;
 }
 
 .bt-card::after {
   content: ''; position: absolute; bottom: 0; left: 0;
-  width: 0; height: 3px; background: var(--gold); transition: width 0.4s;
+  width: 0; height: 3px; background: var(--gold); 
 }
 
-.bt-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,129,241,0.12); }
 .bt-card:hover::after { width: 100%; }
 
 .bt-card__icon {
   width: 64px; height: 64px; border: 1.5px solid var(--gold);
   border-radius: 50%; display: flex; align-items: center;
   justify-content: center; margin: 0 auto 1.5rem;
-  background: rgba(0,129,241,0.05); transition: background 0.3s;
+  background: rgba(0,129,241,0.05); 
 }
 
 .bt-card:hover .bt-card__icon { background: rgba(0,129,241,0.1); }
@@ -229,7 +228,7 @@
   border-radius: 4px; padding: 0.85rem 1rem;
   color: var(--text); font-family: 'Jost', sans-serif;
   font-size: 0.9rem; font-weight: 300; outline: none;
-  transition: border-color 0.3s; width: 100%; appearance: none;
+   width: 100%; appearance: none;
 }
 
 .bt-form__group input:focus,
@@ -252,7 +251,7 @@
   padding: 1rem 2rem; background: var(--gold); color: var(--white);
   border: none; border-radius: 4px; font-family: 'Jost', sans-serif;
   font-size: 0.82rem; letter-spacing: 0.15em; text-transform: uppercase;
-  cursor: pointer; transition: all 0.3s; width: 100%; margin-top: 0.5rem;
+  cursor: pointer;  width: 100%; margin-top: 0.5rem;
 }
 
 .bt-submit svg { width: 18px; height: 18px; flex-shrink: 0; }
@@ -261,7 +260,7 @@
 .bt-back {
   display: block; text-align: center;
   font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--text-muted); text-decoration: none; margin-top: 1rem; transition: color 0.3s;
+  color: var(--text-muted); text-decoration: none; margin-top: 1rem; 
 }
 
 .bt-back:hover { color: var(--gold); }
